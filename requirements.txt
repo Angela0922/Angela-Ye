@@ -1,0 +1,10 @@
+ffmpeg-python
+moviepy
+opencv-python
+torch
+torchvision
+googletrans==4.0.0rc1
+gTTS
+openai-whisper
+face_recognition
+numpy
