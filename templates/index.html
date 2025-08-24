@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TikTok Video Translator & Makeup Transformer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .main-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .upload-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .upload-area {
+            border: 3px dashed #667eea;
+            border-radius: 15px;
+            padding: 60px 40px;
+            background: #f8f9ff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .upload-area:hover {
+            border-color: #764ba2;
+            background: #f0f2ff;
+            transform: translateY(-2px);
+        }
+
+        .upload-area.dragover {
+            border-color: #4CAF50;
+            background: #e8f5e8;
+        }
+
+        .upload-icon {
+            font-size: 4rem;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .upload-text {
+            font-size: 1.3rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .upload-subtext {
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .progress-section {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+
+        .progress-text {
+            text-align: center;
+            font-weight: 600;
+            color: #666;
+        }
+
+        .status-message {
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-weight: 500;
+        }
+
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .status-info {
+            background: #cce7ff;
+            color: #0c5460;
+            border: 1px solid #b8daff;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .feature-description {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .download-section {
+            display: none;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .video-preview {
+            max-width: 100%;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .main-card {
+                padding: 20px;
+            }
+            
+            .upload-area {
+                padding: 40px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎥 TikTok Transformer</h1>
+            <p>Transform Spanish TikTok videos to English with American mainstream makeup styling</p>
+        </div>
+
+        <div class="main-card">
+            <div class="upload-section">
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">📱</div>
+                    <div class="upload-text">Drop your TikTok video here</div>
+                    <div class="upload-subtext">or click to browse (MP4, MOV, AVI - Max 100MB)</div>
+                </div>
+                <input type="file" id="fileInput" accept="video/*">
+                <button class="btn" id="uploadBtn" onclick="selectFile()">Choose Video File</button>
+            </div>
+
+            <div class="progress-section" id="progressSection">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text" id="progressText">0%</div>
+                <div class="loading-spinner"></div>
+                <div id="statusMessage" class="status-message status-info">
+                    Processing your video...
+                </div>
+            </div>
+
+            <div class="download-section" id="downloadSection">
+                <h3>🎉 Your video is ready!</h3>
+                <button class="btn" id="downloadBtn" onclick="downloadVideo()">Download Transformed Video</button>
+            </div>
+        </div>
+
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-icon">🎤</div>
+                <div class="feature-title">Audio Translation</div>
+                <div class="feature-description">
+                    Advanced AI transcribes Spanish speech and translates it to natural, fluent English optimized for American TikTok audiences.
+                </div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">💄</div>
+                <div class="feature-title">Makeup Transformation</div>
+                <div class="feature-description">
+                    Sophisticated facial recognition transforms Latino makeup styles to mainstream American beauty standards while maintaining natural appearance.
+                </div>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🎬</div>
+                <div class="feature-title">Video Synthesis</div>
+                <div class="feature-description">
+                    Seamlessly combines transformed video with synchronized English audio, maintaining original timing and video quality.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentJobId = null;
+        
+        // File upload handling
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const progressSection = document.getElementById('progressSection');
+        const downloadSection = document.getElementById('downloadSection');
+        
+        // Drag and drop functionality
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFileUpload(files[0]);
+            }
+        });
+        
+        uploadArea.addEventListener('click', selectFile);
+        
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFileUpload(e.target.files[0]);
+            }
+        });
+        
+        function selectFile() {
+            fileInput.click();
+        }
+        
+        function handleFileUpload(file) {
+            // Validate file
+            if (!file.type.startsWith('video/')) {
+                showStatusMessage('Please select a valid video file.', 'error');
+                return;
+            }
+            
+            if (file.size > 100 * 1024 * 1024) { // 100MB
+                showStatusMessage('File size must be less than 100MB.', 'error');
+                return;
+            }
+            
+            // Upload file
+            uploadVideo(file);
+        }
+        
+        function uploadVideo(file) {
+            const formData = new FormData();
+            formData.append('video', file);
+            
+            // Show progress section
+            progressSection.style.display = 'block';
+            downloadSection.style.display = 'none';
+            uploadBtn.disabled = true;
+            
+            showStatusMessage('Uploading video...', 'info');
+            
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.job_id) {
+                    currentJobId = data.job_id;
+                    showStatusMessage('Upload successful! Starting processing...', 'info');
+                    monitorProgress();
+                } else {
+                    throw new Error(data.error || 'Upload failed');
+                }
+            })
+            .catch(error => {
+                showStatusMessage('Upload failed: ' + error.message, 'error');
+                resetUI();
+            });
+        }
+        
+        function monitorProgress() {
+            if (!currentJobId) return;
+            
+            fetch(`/status/${currentJobId}`)
+            .then(response => response.json())
+            .then(data => {
+                updateProgress(data.progress || 0);
+                showStatusMessage(data.message || 'Processing...', 'info');
+                
+                if (data.status === 'completed') {
+                    showStatusMessage('Processing completed successfully!', 'success');
+                    showDownloadSection();
+                } else if (data.status === 'error') {
+                    showStatusMessage('Error: ' + data.message, 'error');
+                    resetUI();
+                } else {
+                    // Continue monitoring
+                    setTimeout(monitorProgress, 2000);
+                }
+            })
+            .catch(error => {
+                showStatusMessage('Error checking status: ' + error.message, 'error');
+                resetUI();
+            });
+        }
+        
+        function updateProgress(percentage) {
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            
+            progressFill.style.width = percentage + '%';
+            progressText.textContent = Math.round(percentage) + '%';
+        }
+        
+        function showStatusMessage(message, type) {
+            const statusMessage = document.getElementById('statusMessage');
+            statusMessage.textContent = message;
+            statusMessage.className = `status-message status-${type}`;
+        }
+        
+        function showDownloadSection() {
+            downloadSection.style.display = 'block';
+            document.querySelector('.loading-spinner').style.display = 'none';
+        }
+        
+        function downloadVideo() {
+            if (!currentJobId) return;
+            
+            window.open(`/download/${currentJobId}`, '_blank');
+        }
+        
+        function resetUI() {
+            uploadBtn.disabled = false;
+            progressSection.style.display = 'none';
+            downloadSection.style.display = 'none';
+            currentJobId = null;
+        }
+    </script>
+</body>
+</html>
