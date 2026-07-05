@@ -9,6 +9,15 @@ from typing import Any
 from models.schemas import BedtimeStory, ChildProfile, DollCharacter, StoryScene
 from services.safety import is_story_safe
 
+MIN_NAME_MENTIONS = 2
+
+
+def story_mentions_child(story: BedtimeStory, child_name: str) -> bool:
+    if not child_name.strip():
+        return False
+    text = story.full_text()
+    return text.lower().count(child_name.lower()) >= MIN_NAME_MENTIONS
+
 TEMPLATES_PATH = Path(__file__).resolve().parent.parent / "data" / "story_templates.json"
 
 
@@ -129,6 +138,8 @@ def _parse_llm_response(payload: dict[str, Any], child: ChildProfile, doll: Doll
     )
     if not is_story_safe(story.full_text()):
         raise ValueError("Generated story failed safety check")
+    if not story_mentions_child(story, child.display_name()):
+        raise ValueError("Generated story did not include the child's name")
     return story
 
 

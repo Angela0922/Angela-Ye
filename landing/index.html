@@ -27,15 +27,20 @@
     <div class="container hero-grid">
       <div>
         <div class="pill">Free personalized preview</div>
-        <h1>Your child's name.<br><em>Their perfect doll.</em><br>A story just for them.</h1>
+        <h1>Soft dolls. Sweet stories.<br><em>Big imaginations.</em></h1>
         <p class="hero-lead">
-          Tell us about your little one in a friendly chat. We'll match them with the right
-          Apple Park Kids organic cotton doll, show you the product, and create a cozy bedtime
-          story — before you buy.
+          Organic cotton friends live in Apple Park. Enter your child's name, pick a doll,
+          and read a brand-new bedtime story starring them every time.
         </p>
         <div class="hero-actions">
-          <a class="btn btn-primary" href="http://localhost:8501" data-app-link>Start Your Free Story</a>
-          <a class="btn btn-secondary" href="#how-it-works">See how it works</a>
+          <label class="name-card" for="child-name" style="display:block; cursor:default;">
+            <label for="child-name">Your child's first name</label>
+            <input id="child-name" type="text" placeholder="e.g. Emma, Noah, Sofia…" maxlength="32"
+              style="width:100%; padding:0.75rem 1rem; border:1px solid #e4ddd2; border-radius:999px; font-size:1rem;" />
+            <small style="display:block; margin-top:0.5rem; color:#5a6b5a;">Their name appears throughout the bedtime story.</small>
+          </label>
+          <a class="btn btn-primary" href="http://localhost:8501" data-app-link>⭐ Start Story Time</a>
+          <a class="btn btn-secondary" href="https://appleparkkids.com" target="_blank" rel="noopener">Shop Dolls</a>
         </div>
         <div class="hero-stats">
           <div class="stat"><strong>9</strong><span>doll friends</span></div>
@@ -112,7 +117,7 @@
     <div class="container">
       <div class="section-head">
         <h2>Meet the Apple Park Kids</h2>
-        <p>Nine inclusive organic cotton doll friends, each with their own personality.</p>
+        <p>Nine lovable dolls — plus your little one can star in a story too!</p>
       </div>
       <div class="doll-grid">
         <article class="doll-card">
@@ -177,7 +182,17 @@
   (function () {
     var params = new URLSearchParams(window.location.search);
     var appUrl = params.get("app") || "http://localhost:8501";
+    var nameInput = document.getElementById("child-name");
     document.querySelectorAll("[data-app-link], #app-link").forEach(function (el) {
+      el.addEventListener("click", function (event) {
+        event.preventDefault();
+        var name = nameInput && nameInput.value.trim();
+        var url = appUrl;
+        if (name) {
+          url += (url.indexOf("?") >= 0 ? "&" : "?") + "name=" + encodeURIComponent(name);
+        }
+        window.location.href = url;
+      });
       el.href = appUrl;
     });
   })();

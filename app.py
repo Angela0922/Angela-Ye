@@ -4,14 +4,15 @@ import os
 
 import streamlit as st
 
-from models.schemas import ChatMessage, ChatSession
+from models.schemas import ChatMessage, ChatSession, ChildProfile, DollRecommendation
 from services.character_loader import get_character, load_characters
 from services.chatbot import create_session, process_message
+from services.safety import is_valid_child_name, sanitize_child_name
 from services.illustrator import generate_scene_image, get_scene_image_path, scene_emoji, scene_gradient
 from services.image_assets import doll_image_source
 from services.story_generator import generate_story
 from services.video_story import generate_video_story
-from ui.landing import load_landing_css, render_landing_html
+from ui.landing import load_landing_css
 
 st.set_page_config(
     page_title="Apple Park Kids — Story Chat for Your Child",
@@ -229,58 +230,193 @@ def init_session_state():
         st.session_state.video_path = None
     if "create_video" not in st.session_state:
         st.session_state.create_video = True
-    if "show_chat" not in st.session_state:
-        st.session_state.show_chat = False
+    if "view" not in st.session_state:
+        st.session_state.view = "landing"
+    if "selected_doll_id" not in st.session_state:
+        st.session_state.selected_doll_id = "wren"
+    if "landing_child_name" not in st.session_state:
+        st.session_state.landing_child_name = ""
+
+    query_name = st.query_params.get("name", "")
+    if query_name and not st.session_state.landing_child_name:
+        cleaned = _apply_child_name(query_name)
+        if cleaned:
+            st.session_state.landing_child_name = cleaned
+            st.session_state.chat_session = create_session(initial_name=cleaned)
 
 
-def render_landing_page(characters):
+def _apply_child_name(name: str) -> str | None:
+    cleaned = sanitize_child_name(name)
+    if is_valid_child_name(cleaned):
+        return cleaned
+    return None
+
+
+def render_story_time_landing(characters):
     st.markdown(LANDING_CSS, unsafe_allow_html=True)
+
     st.markdown(
         """
         <div class="nav" style="margin: -1rem -1rem 0; padding: 0 1rem;">
           <div class="container nav-inner">
             <div class="logo"><span>🍎</span> Apple Park Kids</div>
+            <nav class="nav-links">
+              <a href="https://appleparkkids.com" target="_blank">Shop</a>
+            </nav>
           </div>
         </div>
         """,
         unsafe_allow_html=True,
     )
 
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
-        if st.button("Start Your Free Story →", type="primary", use_container_width=True):
-            st.session_state.show_chat = True
-            st.rerun()
+    st.markdown(
+        """
+        <div class="story-sky">
+          <div class="pill">Welcome to the park!</div>
+          <h1>Soft dolls. Sweet stories.<br>Big imaginations.</h1>
+          <p class="hero-lead">
+            Organic cotton friends live in Apple Park. Enter your child's name, pick a doll,
+            and read a brand-new bedtime story starring them every time.
+          </p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
 
-    st.markdown(render_landing_html(characters), unsafe_allow_html=True)
+    col_name, col_actions = st.columns([1.2, 1])
+    with col_name:
+        st.markdown("**Your child's first name**")
+        child_name = st.text_input(
+            "Child's first name",
+            value=st.session_state.landing_child_name,
+            placeholder="e.g. Emma, Noah, Sofia…",
+            label_visibility="collapsed",
+            key="landing_child_name",
+        )
+        preview = _apply_child_name(child_name)
+        if preview:
+            st.caption(f"✨ {preview} will star in the story")
 
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
-        if st.button("🍎  Start Chatting — It's Free", type="primary", use_container_width=True):
-            st.session_state.show_chat = True
-            st.rerun()
+    with col_actions:
+        st.markdown("**Ready?**")
+        start_col, shop_col = st.columns(2)
+        with start_col:
+            start_story = st.button(
+                "⭐ Start Story Time",
+                type="primary",
+                use_container_width=True,
+                disabled=not child_name,
+            )
+        with shop_col:
+            st.link_button("Shop Dolls", "https://appleparkkids.com", use_container_width=True)
+
+    st.markdown(
+        """
+        <div class="park-friends-panel">
+          <div class="section-head" style="margin-bottom:1.25rem;">
+            <h2 style="margin:0;">Meet the Park Friends</h2>
+            <p style="margin:0.35rem 0 0;">Nine lovable dolls — plus your little one can star in a story too!</p>
+          </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    cols_per_row = 4
+    for row_start in range(0, len(characters), cols_per_row):
+        row_chars = characters[row_start : row_start + cols_per_row]
+        cols = st.columns(cols_per_row)
+        for col, doll in zip(cols, row_chars):
+            with col:
+                img = doll_image_source(doll)
+                is_selected = doll.id == st.session_state.selected_doll_id
+                if img:
+                    st.image(str(img), use_container_width=True)
+                label = f"{'✓ ' if is_selected else ''}{doll.name}"
+                if st.button(label, key=f"pick_{doll.id}", use_container_width=True):
+                    st.session_state.selected_doll_id = doll.id
+                    st.rerun()
+
+    if start_story:
+        cleaned = _apply_child_name(child_name)
+        if not cleaned:
+            st.error("Please enter a valid first name (letters only, 2–32 characters).")
+            return
+
+        doll = get_character(st.session_state.selected_doll_id)
+        if not doll:
+            st.error("Please pick an Apple Park friend.")
+            return
+
+        child = ChildProfile(name=cleaned)
+        st.session_state.chat_session = create_session(initial_name=cleaned)
+        st.session_state.chat_session.recommendation = DollRecommendation(
+            doll_id=doll.id,
+            doll_name=doll.name,
+            reason=f"A cozy Apple Park adventure for {child.display_name()} and {doll.name}.",
+        )
+        st.session_state.chat_session.phase = "story_ready"
+
+        with st.spinner(f"Writing {child.display_name()} & {doll.name}'s story…"):
+            st.session_state.chat_session.story = generate_story(child, doll)
+            st.session_state.video_path = None
+
+            if st.session_state.create_video and st.session_state.chat_session.story:
+                try:
+                    video = generate_video_story(st.session_state.chat_session.story, doll)
+                    st.session_state.video_path = str(video)
+                    st.session_state.chat_session.story.video_path = str(video)
+                except Exception as exc:
+                    st.warning(f"Video failed: {exc}. Story text is still available.")
+
+        st.session_state.view = "story"
+        st.rerun()
+
+    st.markdown("---")
+    st.caption("Want help picking the perfect doll? Try our chat storyteller.")
+    if st.button("💬 Chat for a personalized doll match"):
+        cleaned = _apply_child_name(st.session_state.landing_child_name)
+        st.session_state.chat_session = create_session(initial_name=cleaned or "")
+        st.session_state.view = "chat"
+        st.rerun()
 
     st.markdown(
         """
         <div class="footer-bar">
             Wrapped in love, woven with purpose ·
             <a href="https://appleparkkids.com" target="_blank">appleparkkids.com</a>
-            · Organic cotton dolls &amp; toys for little ones
         </div>
         """,
         unsafe_allow_html=True,
     )
 
 
+def render_landing_page(characters):
+    render_story_time_landing(characters)
+
+
 def render_chat_header():
     col_back, col_title = st.columns([1, 4])
     with col_back:
         if st.button("← Home"):
-            st.session_state.show_chat = False
+            st.session_state.view = "landing"
             st.rerun()
     with col_title:
         st.markdown(
             '<div class="chat-header-title">🍎 Story Chat — tell us about your child</div>',
+            unsafe_allow_html=True,
+        )
+
+
+def render_story_header(child_name: str, doll_name: str):
+    col_back, col_title = st.columns([1, 4])
+    with col_back:
+        if st.button("← Back"):
+            st.session_state.view = "landing"
+            st.rerun()
+    with col_title:
+        st.markdown(
+            f'<div class="chat-header-title">🌙 Story Time — {child_name} &amp; {doll_name}</div>',
             unsafe_allow_html=True,
         )
 
@@ -441,13 +577,44 @@ def main():
     init_session_state()
     characters = load_characters()
 
-    if not st.session_state.show_chat:
+    if st.session_state.view == "landing":
         render_landing_page(characters)
+        return
+
+    session: ChatSession = st.session_state.chat_session
+
+    if st.session_state.view == "story" and session.story:
+        doll = get_character(session.story.doll_id)
+        if doll:
+            render_story_header(session.story.child_name, doll.name)
+            render_story_results(session, generate_images=st.session_state.get("generate_images", False))
+            st.markdown(
+                """
+                <div class="footer-bar">
+                    Wrapped in love, woven with purpose ·
+                    <a href="https://appleparkkids.com" target="_blank">appleparkkids.com</a>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
         return
 
     render_chat_header()
 
-    session: ChatSession = st.session_state.chat_session
+    st.markdown("**Your child's first name** — this name appears throughout the story")
+    name_input = st.text_input(
+        "Child name",
+        value=session.profile.name or st.session_state.landing_child_name,
+        placeholder="e.g. Emma",
+        label_visibility="collapsed",
+        key="chat_child_name",
+    )
+    cleaned_name = _apply_child_name(name_input)
+    if cleaned_name:
+        session.profile.name = cleaned_name
+        st.session_state.landing_child_name = cleaned_name
+    elif name_input:
+        st.warning("Please use letters only (2–32 characters) for the story name.")
 
     with st.expander("Options"):
         st.session_state.create_video = st.checkbox(
@@ -471,8 +638,12 @@ def main():
         doll = get_character(session.recommendation.doll_id)
         if doll and not session.story:
             if st.button("🎬 Create My Child's Bedtime Story", type="primary", use_container_width=True):
-                st.session_state.chat_session = generate_story_for_session(session)
-                st.rerun()
+                if not session.profile.has_name():
+                    st.error("Please enter your child's name above — it will appear in the story.")
+                else:
+                    st.session_state.chat_session = generate_story_for_session(session)
+                    st.session_state.view = "story"
+                    st.rerun()
 
     if session.story:
         render_story_results(session, generate_images=st.session_state.get("generate_images", False))
@@ -481,21 +652,31 @@ def main():
         updated_session, _, _ = process_message(session, prompt)
 
         if updated_session.phase == "generating_story":
-            updated_session = generate_story_for_session(updated_session)
-            doll_name = (
-                updated_session.recommendation.doll_name
-                if updated_session.recommendation
-                else "their new friend"
-            )
-            updated_session.messages.append(
-                ChatMessage(
-                    role="assistant",
-                    content=(
-                        f"Here's {updated_session.profile.display_name()}'s bedtime story! "
-                        f"Scroll down to read it, watch the video, and meet {doll_name}."
-                    ),
+            if not updated_session.profile.has_name():
+                updated_session.messages.append(
+                    ChatMessage(
+                        role="assistant",
+                        content="I'd love to write the story — what's your child's first name? It will appear throughout the tale.",
+                    )
                 )
-            )
+                updated_session.phase = "story_ready"
+            else:
+                updated_session = generate_story_for_session(updated_session)
+                doll_name = (
+                    updated_session.recommendation.doll_name
+                    if updated_session.recommendation
+                    else "their new friend"
+                )
+                updated_session.messages.append(
+                    ChatMessage(
+                        role="assistant",
+                        content=(
+                            f"Here's {updated_session.profile.display_name()}'s bedtime story! "
+                            f"Scroll down to read it, watch the video, and meet {doll_name}."
+                        ),
+                    )
+                )
+                st.session_state.view = "story"
 
         st.session_state.chat_session = updated_session
         st.rerun()

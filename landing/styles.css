@@ -427,7 +427,94 @@ section {
   font-weight: 700;
 }
 
-/* ── Responsive ── */
+/* ── Story Time landing ── */
+.story-sky {
+  background: linear-gradient(180deg, #cfe9f6 0%, #e8f4e8 55%, #d4e8c2 100%);
+  border-radius: 28px;
+  padding: 2.5rem 2rem 2rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid #c5ddd0;
+  text-align: center;
+}
+
+.story-sky h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 4.5vw, 3rem);
+  margin: 0 0 0.75rem;
+  color: var(--text);
+}
+
+.story-sky .hero-lead {
+  margin: 0 auto 1.5rem;
+  max-width: 520px;
+}
+
+.name-card {
+  background: var(--white);
+  border: 2px dashed #e8c84a;
+  border-radius: 20px;
+  padding: 1.25rem;
+  margin: 1.5rem auto;
+  max-width: 420px;
+  text-align: left;
+}
+
+.name-card label {
+  display: block;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--text);
+}
+
+.park-friends-panel {
+  background: var(--white);
+  border-radius: 24px;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  margin-top: 1.5rem;
+}
+
+.doll-pick-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.85rem;
+}
+
+.doll-pick {
+  background: #f8f4ef;
+  border: 2px solid transparent;
+  border-radius: 16px;
+  padding: 0.75rem 0.5rem;
+  text-align: center;
+  cursor: pointer;
+}
+
+.doll-pick.selected {
+  border-color: #e8c84a;
+  border-style: dashed;
+  background: #fffbe8;
+}
+
+.doll-pick img {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 0.5rem;
+}
+
+.doll-pick span {
+  display: block;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 700px) {
+  .doll-pick-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
 @media (max-width: 900px) {
   .hero-grid,
   .steps,

@@ -83,10 +83,28 @@ def test_chatbot_collects_profile():
     assert session.recommendation is not None or "Emma" in reply
 
 
+def test_story_includes_child_name():
+    child = ChildProfile(name="Milo", age=4)
+    for doll in load_characters():
+        story = generate_story(child, doll, prefer_ai=False)
+        assert "Milo" in story.full_text()
+        assert story.child_name == "Milo"
+
+
+def test_create_session_with_name():
+    from services.chatbot import create_session
+
+    session = create_session("Emma")
+    assert session.profile.name == "Emma"
+    assert "Emma" in session.messages[0].content
+
+
 if __name__ == "__main__":
     test_characters_load()
     test_child_name_validation()
     test_story_generation_all_characters()
     test_doll_recommendation()
     test_chatbot_collects_profile()
+    test_story_includes_child_name()
+    test_create_session_with_name()
     print("All tests passed.")

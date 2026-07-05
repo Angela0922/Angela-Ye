@@ -16,6 +16,12 @@ WELCOME_MESSAGE = (
     "and weave a personalized bedtime story just for them."
 )
 
+WELCOME_WITH_NAME = (
+    "Hi! I'm your Apple Park storyteller. 🍎\n\n"
+    "I already know **{name}** will star in the story! Tell me a bit more — their age, "
+    "favorite things, and personality — and I'll find the perfect Apple Park Kids doll friend."
+)
+
 FOLLOW_UP_QUESTIONS = [
     "What's your child's first name?",
     "How old are they? (You can skip this if you'd rather not say.)",
@@ -240,8 +246,16 @@ def _wants_story(text: str) -> bool:
     return any(trigger in lowered for trigger in triggers)
 
 
-def create_session() -> ChatSession:
+def create_session(initial_name: str = "") -> ChatSession:
     session = ChatSession()
+    if initial_name:
+        cleaned = sanitize_child_name(initial_name)
+        if is_valid_child_name(cleaned):
+            session.profile.name = cleaned
+            session.messages.append(
+                ChatMessage(role="assistant", content=WELCOME_WITH_NAME.format(name=session.profile.display_name()))
+            )
+            return session
     session.messages.append(ChatMessage(role="assistant", content=WELCOME_MESSAGE))
     return session
 
