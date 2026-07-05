@@ -4,4 +4,4 @@ __pycache__/
 .venv/
 venv/
 assets/scenes/*.png
-.streamlit/
+.streamlit/secrets.toml
