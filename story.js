@@ -325,13 +325,17 @@ function renderStory() {
 
   const story = pickRandom(stories);
   const badge = document.getElementById("character-badge");
+  const doll = document.getElementById("story-doll");
   const title = document.getElementById("story-title");
   const body = document.getElementById("story-body");
   const card = document.getElementById("story-card");
+  const dollClass = character.id === "child" ? "doll-you" : `doll-${character.id}`;
 
   badge.textContent = `Featuring ${character.displayName}`;
   badge.style.background = `${character.color}33`;
   badge.style.color = character.color;
+
+  doll.className = `doll ${dollClass}`;
 
   title.textContent = story.title;
   body.innerHTML = story.paragraphs.map((paragraph) => `<p>${paragraph}</p>`).join("");

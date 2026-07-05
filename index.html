@@ -3,54 +3,133 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Apple Park Story Time</title>
+  <title>Apple Park Kids — Story Time</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="sky">
+  <div class="bg-scene" aria-hidden="true">
+    <div class="sun"></div>
+    <div class="hill hill-back"></div>
+    <div class="hill hill-front"></div>
     <div class="cloud cloud-1"></div>
     <div class="cloud cloud-2"></div>
     <div class="cloud cloud-3"></div>
+    <div class="doodle doodle-star star-1">✦</div>
+    <div class="doodle doodle-star star-2">✦</div>
+    <div class="doodle doodle-heart heart-1">♥</div>
+    <div class="doodle doodle-heart heart-2">♥</div>
   </div>
 
   <main class="page">
-    <header class="hero">
-      <p class="eyebrow">Apple Park Kids</p>
-      <h1>Story Time</h1>
-      <p class="subtitle">Refresh the page for a brand-new adventure with one special friend.</p>
+    <header class="landing-hero">
+      <div class="hero-badge">✿ Apple Park Kids ✿</div>
+      <h1>Meet our friends<br><span>and read a story!</span></h1>
+      <p class="hero-copy">
+        Every refresh brings a brand-new adventure with one special doll friend.
+        Tea parties, swings, songs, and sunny days at the park.
+      </p>
+      <a class="btn btn-primary hero-cta" href="#story-time">Read a story now</a>
+      <div class="hero-dolls" aria-hidden="true">
+        <div class="mini-doll doll-wren"></div>
+        <div class="mini-doll doll-paloma"></div>
+        <div class="mini-doll doll-luke"></div>
+        <div class="mini-doll doll-gwen"></div>
+        <div class="mini-doll doll-levi"></div>
+      </div>
     </header>
 
-    <section class="settings card">
-      <label for="child-name">Your child's name</label>
-      <div class="name-row">
-        <input id="child-name" type="text" placeholder="Enter a name" maxlength="24" autocomplete="off">
-        <button id="save-name" type="button">Save</button>
+    <section class="friends-section card">
+      <div class="section-head">
+        <h2>Our Park Friends</h2>
+        <p>Pick a name, save it, and your little one might star in a tale too!</p>
       </div>
-      <p class="hint">When your child's name is saved, they may appear as the star of a story too.</p>
+
+      <div class="friends-grid">
+        <div class="friend-card">
+          <div class="doll doll-wren" aria-hidden="true"></div>
+          <span>Wren</span>
+        </div>
+        <div class="friend-card">
+          <div class="doll doll-paloma" aria-hidden="true"></div>
+          <span>Paloma</span>
+        </div>
+        <div class="friend-card">
+          <div class="doll doll-luke" aria-hidden="true"></div>
+          <span>Luke</span>
+        </div>
+        <div class="friend-card">
+          <div class="doll doll-gwen" aria-hidden="true"></div>
+          <span>Gwen</span>
+        </div>
+        <div class="friend-card">
+          <div class="doll doll-levi" aria-hidden="true"></div>
+          <span>Levi</span>
+        </div>
+        <div class="friend-card">
+          <div class="doll doll-alex" aria-hidden="true"></div>
+          <span>Alex</span>
+        </div>
+        <div class="friend-card">
+          <div class="doll doll-grady" aria-hidden="true"></div>
+          <span>Grady</span>
+        </div>
+        <div class="friend-card">
+          <div class="doll doll-ella" aria-hidden="true"></div>
+          <span>Ella</span>
+        </div>
+        <div class="friend-card">
+          <div class="doll doll-mia" aria-hidden="true"></div>
+          <span>Mia</span>
+        </div>
+        <div class="friend-card friend-card-you">
+          <div class="doll doll-you" aria-hidden="true"></div>
+          <span>You!</span>
+        </div>
+      </div>
+
+      <div class="settings">
+        <label for="child-name">Your child's name</label>
+        <div class="name-row">
+          <input id="child-name" type="text" placeholder="Type a name here" maxlength="24" autocomplete="off">
+          <button id="save-name" type="button" class="btn btn-soft">Save</button>
+        </div>
+        <p class="hint">Saved names can appear as the star of a story.</p>
+      </div>
     </section>
 
-    <article id="story-card" class="card story-card" aria-live="polite">
-      <div class="character-badge" id="character-badge"></div>
-      <h2 id="story-title"></h2>
-      <div id="story-body" class="story-body"></div>
-      <div class="story-shop">
-        <a
-          href="https://appleparkkids.com/?srsltid=AfmBOoqR38m2IW-x5I55hVAITCQpHzu-LRYU1S2SLIgJCenwOf2YPJiV"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Shop Apple Park Dolls
-        </a>
+    <section id="story-time" class="story-section card" aria-live="polite">
+      <div class="section-head">
+        <h2>Today's Story</h2>
+        <p>Refresh the page or tap the button for a new tale.</p>
       </div>
-    </article>
 
-    <footer class="footer">
-      <button id="refresh-btn" type="button">Tell me another story</button>
-      <p class="footer-note">Or refresh your browser for a new tale.</p>
-    </footer>
+      <article id="story-card" class="story-card">
+        <div class="character-badge" id="character-badge"></div>
+        <div class="story-doll-wrap">
+          <div id="story-doll" class="doll" aria-hidden="true"></div>
+        </div>
+        <h3 id="story-title"></h3>
+        <div id="story-body" class="story-body"></div>
+        <div class="story-shop">
+          <a
+            href="https://appleparkkids.com/?srsltid=AfmBOoqR38m2IW-x5I55hVAITCQpHzu-LRYU1S2SLIgJCenwOf2YPJiV"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-shop"
+          >
+            ♥ Shop Apple Park Dolls
+          </a>
+        </div>
+      </article>
+
+      <footer class="footer">
+        <button id="refresh-btn" type="button" class="btn btn-primary">Tell me another story!</button>
+        <p class="footer-note">Or refresh your browser for a surprise.</p>
+      </footer>
+    </section>
   </main>
 
   <script src="story.js"></script>
