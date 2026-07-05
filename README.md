@@ -28,7 +28,29 @@
 
 5. **Shop CTA** links directly to the doll's product page on appleparkkids.com
 
-## Quick start
+## Deploy the site
+
+### Vercel (recommended for the static site)
+
+1. Import the repo at [vercel.com](https://vercel.com)
+2. Use branch **main** — `vercel.json` and `.vercelignore` deploy only the static HTML/JS/CSS
+3. Your site will be at `https://your-project.vercel.app`
+4. Open **`/story.html`** for Story Time (name + Save + personalized stories)
+
+### GitHub Pages
+
+Pushes to `main` auto-deploy via GitHub Actions to the `gh-pages` branch.
+
+Site URL: `https://angela0922.github.io/Angela-Ye/`
+
+- Home: `index.html`
+- Story Time: `story.html`
+
+### Streamlit app (full chatbot)
+
+Deploy separately on [Streamlit Cloud](https://share.streamlit.io) — point to `app.py`. Vercel cannot run Streamlit.
+
+## Quick start (local)
 
 ### Story chat app (Streamlit)
 
