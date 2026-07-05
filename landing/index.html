@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Apple Park Kids — Soft Dolls, Sweet Stories</title>
+  <meta name="description" content="Enter your child's name, pick an Apple Park Kids doll, and read a free personalized bedtime story starring them." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="park-page">
+  <div class="sky-bg">
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="sun"></div>
+    <div class="hill"></div>
+  </div>
+
+  <header class="nav">
+    <div class="container nav-inner">
+      <div class="logo">Apple Park Kids</div>
+      <a class="btn btn-story-time" href="#" data-app-link>Story Time</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero-center">
+      <div class="container">
+        <div class="pill">Welcome to the park!</div>
+        <h1>Soft dolls. <span class="sweet">Sweet</span> stories.<br>Big imaginations.</h1>
+        <p class="hero-lead">
+          Meet the Apple Park Kids — organic cotton friends made for cuddles, tea parties,
+          and sunny-day adventures. Enter your child's name, pick a doll, and read a
+          brand-new story starring them every time.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-yellow" href="#" data-app-link>Start Story Time</a>
+          <a class="btn btn-pink" href="https://appleparkkids.com" target="_blank" rel="noopener">Shop Dolls</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="friends-section">
+      <div class="container">
+        <div class="friends-panel">
+          <h2>Meet the Park Friends</h2>
+          <p class="friends-sub">Nine lovable dolls — plus your little one can star in a story too!</p>
+
+          <div class="friends-grid">
+            <article class="friend-card" data-doll="wren">
+              <img src="https://cdn.shopify.com/s/files/1/0639/4242/6836/files/DSC_8444_1.jpg?v=1779309022" alt="Wren" />
+              <span>Wren</span>
+            </article>
+            <article class="friend-card" data-doll="paloma">
+              <img src="https://cdn.shopify.com/s/files/1/0639/4242/6836/files/Teal_muslin_dress_TMG33_TMG34_TMG35_TMG36_Dancing_Palms_Pink_leggings_TME31_TME32_TME33_TME34_Dancing_Palms_Pink_headband_TME47_Paloma_TMF54_1.jpg?v=1775049592" alt="Paloma" />
+              <span>Paloma</span>
+            </article>
+            <article class="friend-card" data-doll="luke">
+              <img src="https://cdn.shopify.com/s/files/1/0639/4242/6836/products/TP0146.jpg?v=1664397404" alt="Luke" />
+              <span>Luke</span>
+            </article>
+            <article class="friend-card" data-doll="gwen">
+              <img src="https://cdn.shopify.com/s/files/1/0639/4242/6836/files/MUSTARD_MUSLIN_DRESS_WITH_PUFFY_SLEEVES_GWEN_IN_MUSLIN_2_5e165657-a161-4b97-bce0-6a8079def1ff.jpg?v=1775049654" alt="Gwen" />
+              <span>Gwen</span>
+            </article>
+            <article class="friend-card" data-doll="levi">
+              <img src="https://cdn.shopify.com/s/files/1/0639/4242/6836/products/TP0145.jpg?v=1664396737" alt="Levi" />
+              <span>Levi</span>
+            </article>
+            <article class="friend-card" data-doll="alex">
+              <img src="https://cdn.shopify.com/s/files/1/0639/4242/6836/products/tmf56.jpg?v=1653392097" alt="Alex" />
+              <span>Alex</span>
+            </article>
+            <article class="friend-card" data-doll="grady">
+              <img src="https://cdn.shopify.com/s/files/1/0639/4242/6836/products/tp0147.jpg?v=1664403037" alt="Grady" />
+              <span>Grady</span>
+            </article>
+            <article class="friend-card" data-doll="ella">
+              <img src="https://cdn.shopify.com/s/files/1/0639/4242/6836/products/tm982_2.jpg?v=1653388733" alt="Ella" />
+              <span>Ella</span>
+            </article>
+            <article class="friend-card" data-doll="mia">
+              <img src="https://cdn.shopify.com/s/files/1/0639/4242/6836/files/Mia_in_Dusty_Rose_TP0142_2.jpg?v=1775049784" alt="Mia" />
+              <span>Mia</span>
+            </article>
+            <article class="friend-card child-slot selected">
+              <div class="child-star">⭐</div>
+              <span>Your Child</span>
+              <input id="child-name" type="text" placeholder="Name here…" maxlength="32" aria-label="Your child's first name" />
+            </article>
+          </div>
+
+          <p class="story-preview" id="story-preview" hidden>
+            📖 Your story will star <strong id="preview-name"></strong> &amp; <strong id="preview-doll">Wren</strong>
+          </p>
+
+          <div class="panel-actions">
+            <a class="btn btn-yellow btn-lg" href="#" data-app-link>⭐ Start Story Time</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      Wrapped in love, woven with purpose ·
+      <a href="https://appleparkkids.com" target="_blank" rel="noopener">appleparkkids.com</a>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

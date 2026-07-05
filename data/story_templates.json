@@ -1,0 +1,137 @@
+{
+  "alex": [
+    {
+      "title": "{child} and Alex's Critter Friends",
+      "scene_1_title": "A Sunny Day in Apple Park",
+      "scene_1": "On a golden morning in Apple Park, {child} wandered along the meadow path when Alex appeared from behind a big oak tree, grinning wide. \"Want to explore with me, {child}?\" Alex asked. \"I just found something wiggly under this log!\"",
+      "scene_1_caption": "{child} and Alex explore the meadow in Apple Park",
+      "scene_2_title": "Little Friends Everywhere",
+      "scene_2": "Together, {child} and Alex peeked under rocks and leaves, discovering ladybugs, a shy snail, and a fuzzy caterpillar. Alex introduced each one like an old friend. \"Every critter has a story,\" Alex whispered. {child} giggled as a butterfly landed on their finger.",
+      "scene_2_caption": "Alex shows {child} tiny critter friends in the grass",
+      "scene_3_title": "Curiosity Never Sleeps",
+      "scene_3": "As the sun dipped low, Alex sat beside {child} on a soft blanket. \"Tomorrow we'll find even more wonders,\" Alex said. {child} yawned happily, already dreaming of the next Apple Park adventure.",
+      "scene_3_caption": "{child} and Alex rest under the Apple Park trees at dusk",
+      "moral": "Wonder is everywhere when you look with curious, kind eyes."
+    }
+  ],
+  "ella": [
+    {
+      "title": "Ella's Tea Party for {child}",
+      "scene_1_title": "You're Invited!",
+      "scene_1": "Ella spread a checkered blanket beneath the apple trees and set out tiny cups for everyone. \"{child}!\" she called with a bright smile. \"I saved you the best seat at my Apple Park tea party!\"",
+      "scene_1_caption": "Ella welcomes {child} to a tea party in Apple Park",
+      "scene_2_title": "Friends Old and New",
+      "scene_2": "Luke pushed {child} on the swing, Gwen hummed a tune, and Paloma shared her cookies. Ella made sure everyone felt included. \"The best parties,\" Ella said, \"are the ones where nobody feels left out.\" {child} clapped with joy.",
+      "scene_2_caption": "All the Apple Park Kids gather for Ella's tea party",
+      "scene_3_title": "Sweet Dreams, Sweet Friends",
+      "scene_3": "As stars appeared, Ella tucked {child} in with a cozy blanket from the picnic. \"Sleepovers are my favorite,\" she whispered. \"Especially with friends like you, {child}.\"",
+      "scene_3_caption": "Ella and {child} snuggle up after the tea party",
+      "moral": "The more friends you welcome, the warmer the world feels."
+    }
+  ],
+  "grady": [
+    {
+      "title": "Grady to the Rescue for {child}",
+      "scene_1_title": "A Friend Needs Help",
+      "scene_1": "In Apple Park, {child} sat on a bench feeling a little glum. Grady noticed right away — he always does. \"Hey {child},\" Grady said gently, sitting down. \"Want to talk about it? I'm here.\"",
+      "scene_1_caption": "Grady notices {child} needs a friend in Apple Park",
+      "scene_2_title": "Cheering Up Together",
+      "scene_2": "Grady told {child} his funniest joke, then helped them build a tower of smooth stones by the pond. With each stone, {child} felt a little lighter. \"See?\" Grady grinned. \"Bad days don't last when friends stick together.\"",
+      "scene_2_caption": "Grady and {child} build a stone tower by the pond",
+      "scene_3_title": "Grady's Promise",
+      "scene_3": "At bedtime, Grady gave {child} a high-five. \"Remember, {child} — whenever you need me, Grady to the rescue!\" {child} smiled the biggest smile of the day.",
+      "scene_3_caption": "Grady gives {child} a reassuring high-five at sunset",
+      "moral": "Helping a friend feel better is the bravest thing you can do."
+    }
+  ],
+  "gwen": [
+    {
+      "title": "Gwen's Lullaby for {child}",
+      "scene_1_title": "A Song in the Air",
+      "scene_1": "Walking through Apple Park, {child} heard a sweet hum drifting from the garden. It was Gwen, sitting on a tree stump, making up a melody. \"Oh, {child}!\" Gwen said. \"Want to help me finish this song?\"",
+      "scene_1_caption": "Gwen hums a tune for {child} in the Apple Park garden",
+      "scene_2_title": "Making Music Together",
+      "scene_2": "Gwen and {child} clapped rhythms on their knees and sang about fireflies and apple blossoms. Even the birds seemed to listen. \"You have a beautiful voice, {child},\" Gwen said. \"Music is magic we make together.\"",
+      "scene_2_caption": "{child} and Gwen sing among the apple blossoms",
+      "scene_3_title": "The Bedtime Song",
+      "scene_3": "As the moon rose over Apple Park, Gwen sang a soft lullaby just for {child}. The melody floated like a warm blanket. \"Sweet dreams, {child},\" Gwen whispered. \"I'll hum you to sleep.\"",
+      "scene_3_caption": "Gwen sings a gentle lullaby to {child} under the moon",
+      "moral": "Your voice is a gift — sing it proudly, even in a whisper."
+    }
+  ],
+  "levi": [
+    {
+      "title": "{child} and Levi's Sandcastle Kingdom",
+      "scene_1_title": "Blueprints in the Sand",
+      "scene_1": "At the Apple Park sandbox, Levi was drawing plans with a stick. \"{child}!\" he called excitedly. \"I'm building the most extraordinary sandcastle ever — with bridges, moats, and everything! Want to be my architect partner?\"",
+      "scene_1_caption": "Levi shows {child} his sandcastle plans in Apple Park",
+      "scene_2_title": "Building Something Wonderful",
+      "scene_2": "Levi and {child} packed wet sand into tall towers and carved a tiny bridge. When a wave almost knocked it down, Levi smiled. \"That's okay — we rebuild even better!\" Together they added a flag on top. {child} cheered.",
+      "scene_2_caption": "Levi and {child} build an extraordinary sandcastle",
+      "scene_3_title": "Dreams as Big as Castles",
+      "scene_3": "As the sun set, Levi and {child} admired their creation. \"Every great builder starts with imagination,\" Levi said. {child} closed their eyes, dreaming of kingdoms made of sand and stars.",
+      "scene_3_caption": "Levi and {child} admire their sandcastle at golden hour",
+      "moral": "With patience and imagination, you can build anything wonderful."
+    }
+  ],
+  "luke": [
+    {
+      "title": "Luke's Gentle Push for {child}",
+      "scene_1_title": "Playground Time in Apple Park",
+      "scene_1": "The Apple Park playground was buzzing with laughter. Luke spotted {child} near the swings and waved. \"Hey {child}! Want a push? I give the best ones — not too high, just right!\"",
+      "scene_1_caption": "Luke invites {child} to the Apple Park playground",
+      "scene_2_title": "Up, Up, and Giggles",
+      "scene_2": "Luke pushed {child} on the swing with gentle, steady pushes. Then they took turns on the merry-go-round, spinning slowly under the apple trees. \"The best part of playing,\" Luke said, \"is doing it together.\"",
+      "scene_2_caption": "Luke pushes {child} on the swing at Apple Park",
+      "scene_3_title": "The Coziest Landing",
+      "scene_3": "When playtime ended, Luke walked {child} to a shady bench. \"Rest is part of fun too,\" he said softly. {child} leaned against Luke's shoulder, happy and sleepy.",
+      "scene_3_caption": "Luke and {child} rest together after a day of play",
+      "moral": "Kindness is the gentlest superpower of all."
+    }
+  ],
+  "mia": [
+    {
+      "title": "Mia's Peek-a-Boo Surprise for {child}",
+      "scene_1_title": "Where Is Mia?",
+      "scene_1": "Walking through Apple Park, {child} heard a tiny giggle from behind a tree. \"Peek-a-boo!\" shouted Mia, popping out with a grin. \"Got you, {child}! Want to play my favorite game?\"",
+      "scene_1_caption": "Mia surprises {child} with peek-a-boo in Apple Park",
+      "scene_2_title": "Surprises Everywhere",
+      "scene_2": "Mia and {child} took turns hiding behind bushes, benches, and apple barrels. Each surprise brought fresh giggles. \"Life is more fun with surprises,\" Mia said, covering her eyes. \"Okay {child}, peek-a-boo — where are YOU?\"",
+      "scene_2_caption": "{child} and Mia play peek-a-boo among the apple trees",
+      "scene_3_title": "The Best Surprise of All",
+      "scene_3": "At bedtime, Mia tucked a little note under {child}'s pillow that said \"You're my favorite friend.\" {child} found it and squealed with delight. \"Surprise!\" Mia whispered from the doorway, smiling.",
+      "scene_3_caption": "Mia leaves a sweet surprise for {child} at bedtime",
+      "moral": "The best surprises are the ones that make someone feel loved."
+    }
+  ],
+  "paloma": [
+    {
+      "title": "Paloma Shares with {child}",
+      "scene_1_title": "One Apple, Two Friends",
+      "scene_1": "Under the big apple tree in Apple Park, Paloma held a shiny red apple. \"{child}, want to share?\" she asked warmly. \"Everything tastes better when you split it with a friend.\"",
+      "scene_1_caption": "Paloma offers to share an apple with {child}",
+      "scene_2_title": "Taking Turns on the Slide",
+      "scene_2": "At the playground, kids lined up for the slide. Paloma showed {child} how taking turns works. \"You go first, then me, then Gwen,\" she explained patiently. {child} learned that waiting feels easier with a kind friend beside you.",
+      "scene_2_caption": "Paloma teaches {child} about taking turns at the playground",
+      "scene_3_title": "Sharing Sweet Dreams",
+      "scene_3": "Paloma gave {child} half her blanket at naptime. \"Sharing isn't just about toys,\" she said softly. \"It's about caring.\" {child} drifted off feeling warm and safe.",
+      "scene_3_caption": "Paloma shares her blanket with {child} at naptime",
+      "moral": "Sharing what you have makes every heart a little bigger."
+    }
+  ],
+  "wren": [
+    {
+      "title": "Wren's Story Time for {child}",
+      "scene_1_title": "Cozy Corner in Apple Park",
+      "scene_1": "In a sunny nook of Apple Park, Wren sat with a stack of picture books. \"{child}!\" she called softly. \"Story time is starting — and I saved the comfiest cushion just for you.\"",
+      "scene_1_caption": "Wren invites {child} to story time in Apple Park",
+      "scene_2_title": "Adventures in Pages",
+      "scene_2": "Wren read about dragons and daisies, and {child} added their own twists to every tale. \"You're a wonderful storyteller, {child},\" Wren said. \"The best stories are the ones we tell together.\"",
+      "scene_2_caption": "Wren and {child} read stories together on a cozy cushion",
+      "scene_3_title": "A New Story Every Night",
+      "scene_3": "As eyelids grew heavy, Wren tucked {child} in and whispered, \"Tomorrow we'll write a brand-new story — one that stars you, {child}.\" The stars twinkled approval through the window.",
+      "scene_3_caption": "Wren tucks {child} in after a cozy story time",
+      "moral": "Every night is a new page — and you are the hero of your story."
+    }
+  ]
+}

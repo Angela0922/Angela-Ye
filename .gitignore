@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+.env
+.venv/
+venv/
+assets/scenes/*.png
+assets/audio/*.mp3
+assets/videos/*.mp4
+assets/scene_slides/
+.streamlit/secrets.toml

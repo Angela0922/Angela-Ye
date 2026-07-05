@@ -1,0 +1,263 @@
+[
+  {
+    "id": "alex",
+    "name": "Alex",
+    "tagline": "Curious explorer who befriends every little critter in Apple Park",
+    "personality": [
+      "curious",
+      "wonder-filled",
+      "outdoorsy"
+    ],
+    "world": "Apple Park",
+    "themes": [
+      "curiosity",
+      "nature",
+      "gentle friendship"
+    ],
+    "age_range": "3-8",
+    "voice_style": "warm and wondering, like a sunny afternoon adventure",
+    "appearance": "dark brown skin tone and black hair, removable overalls and T-shirt",
+    "colors": {
+      "primary": "#5C4033",
+      "secondary": "#C4A882",
+      "accent": "#7CB342"
+    },
+    "emoji": "\ud83e\udeb2",
+    "price": 55.0,
+    "purchase_url": "https://appleparkkids.com/products/park-friends-alex",
+    "image_url": "https://cdn.shopify.com/s/files/1/0639/4242/6836/products/tmf56.jpg?v=1653392097",
+    "image_local": "assets/dolls/alex.jpg"
+  },
+  {
+    "id": "ella",
+    "name": "Ella",
+    "tagline": "Social butterfly who gathers friends for tea parties and sleepovers",
+    "personality": [
+      "social",
+      "warm",
+      "welcoming"
+    ],
+    "world": "Apple Park",
+    "themes": [
+      "friendship",
+      "togetherness",
+      "kindness"
+    ],
+    "age_range": "3-8",
+    "voice_style": "cheerful and inviting, like a giggle at a tea party",
+    "appearance": "light skin tone and yellow pigtails, pink floral dress",
+    "colors": {
+      "primary": "#E8A0BF",
+      "secondary": "#FFF0F5",
+      "accent": "#FFD54F"
+    },
+    "emoji": "\ud83e\uded6",
+    "price": 55.0,
+    "purchase_url": "https://appleparkkids.com/products/organic-best-friends-ella",
+    "image_url": "https://cdn.shopify.com/s/files/1/0639/4242/6836/products/tm982_2.jpg?v=1653388733",
+    "image_local": "assets/dolls/ella.jpg"
+  },
+  {
+    "id": "grady",
+    "name": "Grady",
+    "tagline": "Helpful hero who cheers up friends in need",
+    "personality": [
+      "helpful",
+      "caring",
+      "brave"
+    ],
+    "world": "Apple Park",
+    "themes": [
+      "empathy",
+      "helping others",
+      "friendship"
+    ],
+    "age_range": "3-8",
+    "voice_style": "steady and reassuring, like a trusted big friend",
+    "appearance": "medium tan skin tone and black hair, caramel outfit",
+    "colors": {
+      "primary": "#A67B5B",
+      "secondary": "#F5E6D3",
+      "accent": "#FF8A65"
+    },
+    "emoji": "\ud83e\uddb8",
+    "price": 55.0,
+    "purchase_url": "https://appleparkkids.com/products/grady-in-caramel",
+    "image_url": "https://cdn.shopify.com/s/files/1/0639/4242/6836/products/tp0147.jpg?v=1664403037",
+    "image_local": "assets/dolls/grady.jpg"
+  },
+  {
+    "id": "gwen",
+    "name": "Gwen",
+    "tagline": "Sweet songbird who hums tunes and makes up melodies",
+    "personality": [
+      "musical",
+      "creative",
+      "joyful"
+    ],
+    "world": "Apple Park",
+    "themes": [
+      "creativity",
+      "self-expression",
+      "bedtime calm"
+    ],
+    "age_range": "3-8",
+    "voice_style": "melodic and soft, like a gentle lullaby",
+    "appearance": "medium tan skin tone and black pigtails, organic cotton romper",
+    "colors": {
+      "primary": "#7E57C2",
+      "secondary": "#E1BEE7",
+      "accent": "#FFD700"
+    },
+    "emoji": "\ud83c\udfb5",
+    "price": 55.0,
+    "purchase_url": "https://appleparkkids.com/products/park-friends-gwen",
+    "image_url": "https://cdn.shopify.com/s/files/1/0639/4242/6836/files/MUSTARD_MUSLIN_DRESS_WITH_PUFFY_SLEEVES_GWEN_IN_MUSLIN_2_5e165657-a161-4b97-bce0-6a8079def1ff.jpg?v=1775049654",
+    "image_local": "assets/dolls/gwen.jpg"
+  },
+  {
+    "id": "levi",
+    "name": "Levi",
+    "tagline": "Budding architect who builds extraordinary sandcastles",
+    "personality": [
+      "imaginative",
+      "patient",
+      "builder"
+    ],
+    "world": "Apple Park",
+    "themes": [
+      "creativity",
+      "perseverance",
+      "wonder"
+    ],
+    "age_range": "3-8",
+    "voice_style": "thoughtful and proud, like showing off a masterpiece",
+    "appearance": "medium tan skin tone and medium brown hair, sage green outfit",
+    "colors": {
+      "primary": "#7D9B76",
+      "secondary": "#E8F5E9",
+      "accent": "#F4D03F"
+    },
+    "emoji": "\ud83c\udff0",
+    "price": 55.0,
+    "purchase_url": "https://appleparkkids.com/products/levi-in-sage",
+    "image_url": "https://cdn.shopify.com/s/files/1/0639/4242/6836/products/TP0145.jpg?v=1664396737",
+    "image_local": "assets/dolls/levi.jpg"
+  },
+  {
+    "id": "luke",
+    "name": "Luke",
+    "tagline": "Gentle playground pal who gives the best pushes on the swing",
+    "personality": [
+      "gentle",
+      "kind",
+      "playful"
+    ],
+    "world": "Apple Park",
+    "themes": [
+      "kindness",
+      "playfulness",
+      "cozy endings"
+    ],
+    "age_range": "3-8",
+    "voice_style": "easygoing and warm, like a summer breeze",
+    "appearance": "light skin tone and yellow hair, marine blue outfit",
+    "colors": {
+      "primary": "#4A90A4",
+      "secondary": "#B3E5FC",
+      "accent": "#FFF176"
+    },
+    "emoji": "\ud83c\udfa0",
+    "price": 55.0,
+    "purchase_url": "https://appleparkkids.com/products/luke-in-marine",
+    "image_url": "https://cdn.shopify.com/s/files/1/0639/4242/6836/products/TP0146.jpg?v=1664397404",
+    "image_local": "assets/dolls/luke.jpg"
+  },
+  {
+    "id": "mia",
+    "name": "Mia",
+    "tagline": "Playful surprise-lover whose favorite game is peek-a-boo",
+    "personality": [
+      "playful",
+      "surprising",
+      "silly"
+    ],
+    "world": "Apple Park",
+    "themes": [
+      "joy",
+      "play",
+      "laughter"
+    ],
+    "age_range": "3-8",
+    "voice_style": "bubbly and giggly, full of delightful surprises",
+    "appearance": "dark brown skin tone and black pigtails, dusty rose dress",
+    "colors": {
+      "primary": "#C48B9F",
+      "secondary": "#FCE4EC",
+      "accent": "#81C784"
+    },
+    "emoji": "\ud83d\ude48",
+    "price": 55.0,
+    "purchase_url": "https://appleparkkids.com/products/mia-in-dusty-rose",
+    "image_url": "https://cdn.shopify.com/s/files/1/0639/4242/6836/files/Mia_in_Dusty_Rose_TP0142_2.jpg?v=1775049784",
+    "image_local": "assets/dolls/mia.jpg"
+  },
+  {
+    "id": "paloma",
+    "name": "Paloma",
+    "tagline": "Kind friend whose superpower is sharing and taking turns",
+    "personality": [
+      "kind",
+      "thoughtful",
+      "generous"
+    ],
+    "world": "Apple Park",
+    "themes": [
+      "sharing",
+      "patience",
+      "friendship"
+    ],
+    "age_range": "3-8",
+    "voice_style": "calm and caring, like a gentle reminder to be kind",
+    "appearance": "medium tan skin tone and medium brown ponytail, teal muslin romper",
+    "colors": {
+      "primary": "#4DB6AC",
+      "secondary": "#B2DFDB",
+      "accent": "#FFCC80"
+    },
+    "emoji": "\ud83e\udd1d",
+    "price": 55.0,
+    "purchase_url": "https://appleparkkids.com/products/park-friends-paloma",
+    "image_url": "https://cdn.shopify.com/s/files/1/0639/4242/6836/files/Teal_muslin_dress_TMG33_TMG34_TMG35_TMG36_Dancing_Palms_Pink_leggings_TME31_TME32_TME33_TME34_Dancing_Palms_Pink_headband_TME47_Paloma_TMF54_1.jpg?v=1775049592",
+    "image_local": "assets/dolls/paloma.jpg"
+  },
+  {
+    "id": "wren",
+    "name": "Wren",
+    "tagline": "Cozy story-time friend ready for tea parties and little adventures",
+    "personality": [
+      "sweet",
+      "cozy",
+      "imaginative"
+    ],
+    "world": "Apple Park",
+    "themes": [
+      "storytelling",
+      "comfort",
+      "gentle adventures"
+    ],
+    "age_range": "3-8",
+    "voice_style": "soft and storybook-like, perfect for bedtime",
+    "appearance": "rosy-cheeked redhead with sweet pigtails, blue muslin dress",
+    "colors": {
+      "primary": "#5C8DB8",
+      "secondary": "#E3F2FD",
+      "accent": "#EF9A9A"
+    },
+    "emoji": "\ud83d\udcd6",
+    "price": 55.0,
+    "purchase_url": "https://appleparkkids.com/products/apple-park-kids-wren",
+    "image_url": "https://cdn.shopify.com/s/files/1/0639/4242/6836/files/DSC_8444_1.jpg?v=1779309022",
+    "image_local": "assets/dolls/wren.jpg"
+  }
+]
