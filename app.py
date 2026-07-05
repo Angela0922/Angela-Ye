@@ -10,7 +10,7 @@ from services.chatbot import create_session, process_message
 from services.safety import is_valid_child_name, sanitize_child_name
 from services.illustrator import generate_scene_image, get_scene_image_path, scene_emoji, scene_gradient
 from services.image_assets import doll_image_source
-from services.story_generator import generate_story
+from services.story_generator import generate_story, regenerate_story_for_child, swap_child_name_in_story
 from services.video_story import generate_video_story
 from ui.landing import load_landing_css
 
@@ -208,6 +208,44 @@ CUSTOM_CSS = """
         align-items: center;
         justify-content: space-between;
         margin-bottom: 1rem;
+    }
+    .name-save-panel {
+        background: #fff;
+        border: 1px solid #E4DDD2;
+        border-radius: 16px;
+        padding: 1.25rem 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+    .featuring-badge {
+        display: inline-block;
+        background: #EEF5EA;
+        color: #5C7A4A;
+        font-family: 'Nunito', sans-serif;
+        font-weight: 700;
+        font-size: 0.82rem;
+        padding: 0.35rem 0.9rem;
+        border-radius: 999px;
+        border: 1px solid #C5D9BC;
+        margin-bottom: 1rem;
+    }
+    .story-box {
+        background: #fff;
+        border: 2px dashed #C5D9BC;
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin: 1rem 0;
+    }
+    .story-box h3 {
+        font-family: 'Fraunces', serif;
+        color: #5C7A4A;
+        margin: 0 0 1rem;
+        font-size: 1.35rem;
+    }
+    .story-box p {
+        font-family: 'Nunito', sans-serif;
+        color: #3D4F3D;
+        line-height: 1.75;
+        margin: 0 0 1rem;
     }
     .chat-header-title {
         font-family: 'Fraunces', serif;
@@ -538,6 +576,62 @@ def render_chat(session: ChatSession):
     st.markdown("</div>", unsafe_allow_html=True)
 
 
+def render_name_save_bar(session: ChatSession) -> bool:
+    """Name input + Save. Returns True if story was regenerated."""
+    st.markdown('<div class="name-save-panel">', unsafe_allow_html=True)
+    st.markdown("**Your child's name**")
+    col_input, col_save = st.columns([4, 1])
+    with col_input:
+        default_name = session.story.child_name if session.story else session.profile.name
+        st.text_input(
+            "Child name",
+            value=default_name or _get_landing_child_name(),
+            placeholder="e.g. Angela",
+            label_visibility="collapsed",
+            key="story_save_name",
+        )
+    with col_save:
+        save_clicked = st.button("Save", type="primary", use_container_width=True)
+    st.caption("Saved names appear as the star of the story.")
+    st.markdown("</div>", unsafe_allow_html=True)
+
+    if not save_clicked:
+        return False
+
+    raw_name = st.session_state.get("story_save_name", "").strip()
+    cleaned = _apply_child_name(raw_name)
+    if not cleaned:
+        st.error("Please enter a valid first name (letters only, 2–32 characters).")
+        return False
+
+    doll_id = session.story.doll_id if session.story else session.recommendation.doll_id if session.recommendation else st.session_state.selected_doll_id
+    doll = get_character(doll_id)
+    if not doll:
+        st.error("Please pick an Apple Park friend first.")
+        return False
+
+    session.profile.name = cleaned
+    st.session_state.landing_child_name = cleaned
+    st.session_state.chat_child_name = cleaned
+
+    with st.spinner(f"Updating story for {cleaned}…"):
+        child = ChildProfile(name=cleaned, age=session.profile.age)
+        session.story = regenerate_story_for_child(child, doll)
+        session.profile = child
+        if session.recommendation is None:
+            session.recommendation = DollRecommendation(
+                doll_id=doll.id,
+                doll_name=doll.name,
+                reason=f"A cozy Apple Park adventure for {cleaned} and {doll.name}.",
+            )
+
+    st.session_state.video_path = None
+    if session.story.video_path:
+        session.story.video_path = None
+    st.success(f"Story updated — **{cleaned}** now stars in the tale!")
+    return True
+
+
 def render_story_results(session: ChatSession, generate_images: bool):
     story = session.story
     if not story:
@@ -546,6 +640,15 @@ def render_story_results(session: ChatSession, generate_images: bool):
     doll = get_character(story.doll_id)
     if not doll:
         return
+
+    if render_name_save_bar(session):
+        st.session_state.chat_session = session
+        st.rerun()
+
+    st.markdown(
+        f'<span class="featuring-badge">Featuring {story.child_name} &amp; {doll.name}</span>',
+        unsafe_allow_html=True,
+    )
 
     st.markdown(
         f'<div class="result-header">'
@@ -569,6 +672,16 @@ def render_story_results(session: ChatSession, generate_images: bool):
             )
 
     with st.expander("📖 Read the full story", expanded=True):
+        full_paragraphs = []
+        for scene in story.scenes:
+            full_paragraphs.append(scene.text)
+        story_body = "\n\n".join(full_paragraphs)
+
+        st.markdown('<div class="story-box">', unsafe_allow_html=True)
+        st.markdown(f"### {story.title}")
+        st.markdown(_highlight_child_name(story_body, story.child_name))
+        st.markdown("</div>", unsafe_allow_html=True)
+
         for index, scene in enumerate(story.scenes):
             image_path = get_scene_image_path(story, scene, index)
             if generate_images and image_path is None:

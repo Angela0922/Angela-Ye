@@ -180,6 +180,34 @@ def generate_openai_story(child: ChildProfile, doll: DollCharacter) -> BedtimeSt
     return _parse_llm_response(payload, child, doll)
 
 
+def swap_child_name_in_story(story: BedtimeStory, new_name: str) -> BedtimeStory:
+    """Replace the previous child name everywhere in an existing story."""
+    import re
+
+    old_name = story.child_name
+    if not new_name.strip() or old_name.lower() == new_name.lower():
+        story.child_name = new_name
+        return story
+
+    def swap(text: str) -> str:
+        if not text:
+            return text
+        return re.sub(re.escape(old_name), new_name, text, flags=re.IGNORECASE)
+
+    story.title = swap(story.title)
+    story.child_name = new_name
+    story.scenes = [
+        StoryScene(
+            title=swap(scene.title),
+            text=swap(scene.text),
+            illustration_caption=swap(scene.illustration_caption),
+        )
+        for scene in story.scenes
+    ]
+    story.moral = swap(story.moral)
+    return ensure_child_name_in_story(story, new_name)
+
+
 def ensure_child_name_in_story(story: BedtimeStory, child_name: str) -> BedtimeStory:
     """Guarantee the child's name appears in the story text."""
     if story_mentions_child(story, child_name):
@@ -203,6 +231,11 @@ def ensure_child_name_in_story(story: BedtimeStory, child_name: str) -> BedtimeS
         )
     story.child_name = child_name
     return story
+
+
+def regenerate_story_for_child(child: ChildProfile, doll: DollCharacter) -> BedtimeStory:
+    """Create a fresh story with the child's name woven throughout."""
+    return generate_story(child, doll)
 
 
 def generate_story(child: ChildProfile, doll: DollCharacter, prefer_ai: bool = True) -> BedtimeStory:

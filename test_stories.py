@@ -115,6 +115,32 @@ def test_ensure_child_name_in_story():
     assert "Milo" in fixed.full_text()
 
 
+def test_angela_in_alex_story():
+    child = ChildProfile(name="Angela", age=6)
+    alex = next(d for d in load_characters() if d.id == "alex")
+    story = generate_story(child, alex, prefer_ai=False)
+    assert "Angela" in story.full_text()
+    assert story.child_name == "Angela"
+    assert "Alex" in story.full_text()
+
+
+def test_swap_child_name():
+    from services.story_generator import swap_child_name_in_story
+    from models.schemas import BedtimeStory, StoryScene
+
+    story = BedtimeStory(
+        title="Emma's Adventure",
+        child_name="Emma",
+        doll_name="Alex",
+        doll_id="alex",
+        scenes=[StoryScene("Start", "Emma waved hello.", "Park")],
+        moral="Sweet dreams, Emma.",
+    )
+    updated = swap_child_name_in_story(story, "Angela")
+    assert "Angela" in updated.full_text()
+    assert "Emma" not in updated.full_text()
+
+
 if __name__ == "__main__":
     test_characters_load()
     test_child_name_validation()
@@ -124,4 +150,6 @@ if __name__ == "__main__":
     test_story_includes_child_name()
     test_create_session_with_name()
     test_ensure_child_name_in_story()
+    test_angela_in_alex_story()
+    test_swap_child_name()
     print("All tests passed.")
