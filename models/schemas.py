@@ -19,10 +19,14 @@ class DollCharacter:
     price: float
     purchase_url: str
     appearance: str = ""
+    image_url: str = ""
+    image_local: str = ""
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> DollCharacter:
-        return cls(**data)
+        known = {f.name for f in cls.__dataclass_fields__.values()}
+        filtered = {k: v for k, v in data.items() if k in known}
+        return cls(**filtered)
 
 
 @dataclass

@@ -9,6 +9,7 @@ import streamlit as st
 from models.schemas import ChildProfile
 from services.character_loader import get_character, load_characters
 from services.illustrator import generate_scene_image, get_scene_image_path, scene_emoji, scene_gradient
+from services.image_assets import brand_hero_path, doll_image_path
 from services.safety import is_valid_child_name, sanitize_child_name
 from services.story_generator import generate_story
 from services.video_story import generate_video_story, get_video_path
@@ -194,7 +195,17 @@ CUSTOM_CSS = """
         background: #EEF5EA;
         box-shadow: 0 0 0 3px rgba(92,122,74,0.12);
     }
-    .doll-emoji { font-size: 2.2rem; line-height: 1; margin-bottom: 0.25rem; }
+    .doll-photo-wrap {
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 0.5rem;
+        background: #fff;
+        border: 1px solid #E4DDD2;
+    }
+    .doll-card.selected .doll-photo-wrap {
+        border-color: #5C7A4A;
+        box-shadow: 0 0 0 2px rgba(92,122,74,0.25);
+    }
     .doll-name {
         font-family: 'Fraunces', serif;
         font-size: 1rem;
@@ -335,26 +346,51 @@ st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
 
 
 def render_hero():
-    st.markdown(
-        """
-        <div class="hero-wrap">
-            <div class="brand-pill">Apple Park Kids</div>
-            <div class="hero-title">
-                A bedtime video story starring<br>
-                <em>your child</em> &amp; their new best friend
+    hero_img = brand_hero_path()
+    if hero_img:
+        col_text, col_img = st.columns([3, 2])
+        with col_text:
+            st.markdown(
+                """
+                <div class="hero-wrap" style="margin-bottom:0;">
+                    <div class="brand-pill">Apple Park Kids</div>
+                    <div class="hero-title">
+                        A bedtime video story starring<br>
+                        <em>your child</em> &amp; their new best friend
+                    </div>
+                    <p class="hero-subtitle">
+                        Type your little one's name, pick an organic cotton doll, and watch a
+                        personalized narrated story come to life — free, before you buy.
+                    </p>
+                    <p class="hero-quote">
+                        "A perfect day in Apple Park has already begun."
+                    </p>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+        with col_img:
+            st.image(str(hero_img), use_container_width=True, caption="Apple Park Kids · Organic Cotton Dolls")
+    else:
+        st.markdown(
+            """
+            <div class="hero-wrap">
+                <div class="brand-pill">Apple Park Kids</div>
+                <div class="hero-title">
+                    A bedtime video story starring<br>
+                    <em>your child</em> &amp; their new best friend
+                </div>
+                <p class="hero-subtitle">
+                    Type your little one's name, pick an organic cotton doll, and watch a
+                    personalized narrated story come to life — free, before you buy.
+                </p>
+                <p class="hero-quote">
+                    "A perfect day in Apple Park has already begun."
+                </p>
             </div>
-            <p class="hero-subtitle">
-                Type your little one's name, pick an organic cotton doll, and watch a
-                personalized narrated story come to life — free, before you buy.
-                Every Apple Park Kid has their own adventure waiting in the park.
-            </p>
-            <p class="hero-quote">
-                "A perfect day in Apple Park has already begun."
-            </p>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+            """,
+            unsafe_allow_html=True,
+        )
 
 
 def render_trust_bar():
@@ -414,9 +450,11 @@ def render_doll_picker(characters: list, selected_id: str | None) -> str | None:
             card_class = "doll-card selected" if is_selected else "doll-card"
             trait = doll.personality[0].title() if doll.personality else ""
             with col:
+                img_path = doll_image_path(doll)
+                if img_path:
+                    st.image(str(img_path), use_container_width=True)
                 st.markdown(
                     f'<div class="{card_class}">'
-                    f'<div class="doll-emoji">{doll.emoji}</div>'
                     f'<div class="doll-name">{doll.name}</div>'
                     f'<div class="doll-trait">{trait}</div>'
                     f'<div class="doll-price">${doll.price:.0f}</div>'
@@ -453,12 +491,16 @@ def render_story(story, doll, generate_images: bool):
         if image_path:
             st.image(str(image_path), caption=scene.illustration_caption, use_container_width=True)
         else:
-            st.markdown(
-                f'<div class="scene-illustration" style="background:{gradient};">'
-                f'<span title="{scene.illustration_caption}">{emoji}</span></div>',
-                unsafe_allow_html=True,
-            )
-            st.caption(scene.illustration_caption)
+            doll_img = doll_image_path(doll)
+            if doll_img:
+                st.image(str(doll_img), caption=scene.illustration_caption, use_container_width=True)
+            else:
+                st.markdown(
+                    f'<div class="scene-illustration" style="background:{gradient};">'
+                    f'<span title="{scene.illustration_caption}">{emoji}</span></div>',
+                    unsafe_allow_html=True,
+                )
+                st.caption(scene.illustration_caption)
 
         st.markdown(f'<div class="scene-title">{scene.title}</div>', unsafe_allow_html=True)
         st.markdown(f'<div class="scene-text">{scene.text}</div>', unsafe_allow_html=True)
@@ -469,6 +511,12 @@ def render_story(story, doll, generate_images: bool):
 
 
 def render_cta(doll, child_name: str):
+    img_path = doll_image_path(doll)
+    if img_path:
+        c1, c2, c3 = st.columns([1, 1, 1])
+        with c2:
+            st.image(str(img_path), use_container_width=True, caption=f"{doll.name} — Apple Park Kids")
+
     st.markdown(
         f'<div class="cta-box">'
         f'<div class="cta-title">{child_name} &amp; {doll.name} — best friends already?</div>'
@@ -539,12 +587,21 @@ def main():
         cleaned_preview = sanitize_child_name(child_name)
         if is_valid_child_name(cleaned_preview):
             preview_name = cleaned_preview[:1].upper() + cleaned_preview[1:]
-            st.markdown(
-                f'<div class="section-hint" style="text-align:center;margin-top:0.5rem;">'
-                f"Ready to create: <strong>{preview_name}</strong> &amp; <strong>{selected_doll.name}</strong>"
-                f"'s Apple Park adventure</div>",
-                unsafe_allow_html=True,
-            )
+            preview_col1, preview_col2 = st.columns([1, 2])
+            with preview_col1:
+                img = doll_image_path(selected_doll)
+                if img:
+                    st.image(str(img), use_container_width=True)
+            with preview_col2:
+                st.markdown(
+                    f'<div class="section-label" style="margin-top:1rem;">'
+                    f"{preview_name} &amp; {selected_doll.name}</div>",
+                    unsafe_allow_html=True,
+                )
+                st.markdown(
+                    f'<div class="section-hint">{selected_doll.tagline}</div>',
+                    unsafe_allow_html=True,
+                )
 
     create_video = True
     generate_images = False
