@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apple Park Story Time</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="sky">
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="cloud cloud-3"></div>
+  </div>
+
+  <main class="page">
+    <header class="hero">
+      <p class="eyebrow">Apple Park Kids</p>
+      <h1>Story Time</h1>
+      <p class="subtitle">Refresh the page for a brand-new adventure with one special friend.</p>
+    </header>
+
+    <section class="settings card">
+      <label for="child-name">Your child's name</label>
+      <div class="name-row">
+        <input id="child-name" type="text" placeholder="Enter a name" maxlength="24" autocomplete="off">
+        <button id="save-name" type="button">Save</button>
+      </div>
+      <p class="hint">When your child's name is saved, they may appear as the star of a story too.</p>
+    </section>
+
+    <article id="story-card" class="card story-card" aria-live="polite">
+      <div class="character-badge" id="character-badge"></div>
+      <h2 id="story-title"></h2>
+      <div id="story-body" class="story-body"></div>
+    </article>
+
+    <footer class="footer">
+      <button id="refresh-btn" type="button">Tell me another story</button>
+      <p class="footer-note">Or refresh your browser for a new tale.</p>
+    </footer>
+  </main>
+
+  <script src="story.js"></script>
+</body>
+</html>
