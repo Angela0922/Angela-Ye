@@ -178,12 +178,134 @@ body {
   50% { transform: translateY(-8px) rotate(6deg); }
 }
 
+.top-nav {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: min(920px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 1.25rem 0 0;
+}
+
+.nav-logo {
+  font-family: "Baloo 2", cursive;
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.nav-cta {
+  padding: 0.55rem 1.1rem;
+  font-size: 0.95rem;
+}
+
 .page {
   position: relative;
   z-index: 1;
   width: min(920px, calc(100% - 2rem));
   margin: 0 auto;
-  padding: 2rem 0 4rem;
+  padding: 1.5rem 0 4rem;
+}
+
+.landing-page .landing-hero {
+  padding-top: 1rem;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.steps-section {
+  margin-top: 1.5rem;
+}
+
+.steps-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.step-card {
+  background: #fff;
+  border: 2px dashed #d8cfc4;
+  border-radius: 20px;
+  padding: 1.25rem;
+  text-align: center;
+}
+
+.step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: var(--stroke) solid var(--outline);
+  border-radius: 50%;
+  background: var(--mustard);
+  font-family: "Baloo 2", cursive;
+  font-weight: 800;
+  margin-bottom: 0.75rem;
+}
+
+.step-card h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.15rem;
+}
+
+.step-card p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.cta-banner {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.cta-banner h2 {
+  margin: 0;
+  font-size: clamp(1.8rem, 4vw, 2.4rem);
+}
+
+.cta-banner p {
+  margin: 0.75rem 0 1.25rem;
+  color: var(--muted);
+  font-size: 1.05rem;
+}
+
+.site-footer {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 0 1rem 2rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.site-footer a {
+  color: var(--sage-dark);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.story-header {
+  text-align: center;
+  margin-bottom: 1.25rem;
+}
+
+.story-header h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
 }
 
 .card {
@@ -455,8 +577,7 @@ h1 span {
 }
 
 .settings {
-  padding-top: 0.5rem;
-  border-top: 2px dashed #e0d5c8;
+  margin-bottom: 1.25rem;
 }
 
 .settings label {
@@ -492,7 +613,7 @@ input[type="text"]:focus {
 }
 
 .story-section {
-  margin-top: 1.5rem;
+  margin-top: 0;
 }
 
 .story-card {
@@ -535,7 +656,8 @@ input[type="text"]:focus {
   transform: scale(1.35);
 }
 
-#story-title {
+#story-title,
+.story-card h2 {
   margin: 0 0 1rem;
   font-size: clamp(1.5rem, 4vw, 2rem);
   color: var(--sage-dark);

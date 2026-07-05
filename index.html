@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Apple Park Kids — Story Time</title>
+  <title>Apple Park Kids — Welcome</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -23,28 +23,46 @@
     <div class="doodle doodle-heart heart-2">♥</div>
   </div>
 
-  <main class="page">
-    <header class="landing-hero">
-      <div class="hero-badge">✿ Apple Park Kids ✿</div>
-      <h1>Meet our friends<br><span>and read a story!</span></h1>
+  <header class="top-nav">
+    <a class="nav-logo" href="index.html">✿ Apple Park Kids</a>
+    <a class="btn btn-soft nav-cta" href="story.html">Story Time</a>
+  </header>
+
+  <main class="page landing-page">
+    <section class="landing-hero">
+      <div class="hero-badge">Welcome to the park!</div>
+      <h1>Soft dolls.<br><span>Sweet stories.</span><br>Big imaginations.</h1>
       <p class="hero-copy">
-        Every refresh brings a brand-new adventure with one special doll friend.
-        Tea parties, swings, songs, and sunny days at the park.
+        Meet the Apple Park Kids — organic cotton friends made for cuddles,
+        tea parties, and sunny-day adventures. Tap below to read a brand-new
+        story starring one special doll every time.
       </p>
-      <a class="btn btn-primary hero-cta" href="#story-time">Read a story now</a>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="story.html">Start Story Time</a>
+        <a
+          class="btn btn-shop"
+          href="https://appleparkkids.com/?srsltid=AfmBOoqR38m2IW-x5I55hVAITCQpHzu-LRYU1S2SLIgJCenwOf2YPJiV"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Shop Dolls
+        </a>
+      </div>
       <div class="hero-dolls" aria-hidden="true">
         <div class="mini-doll doll-wren"></div>
         <div class="mini-doll doll-paloma"></div>
         <div class="mini-doll doll-luke"></div>
         <div class="mini-doll doll-gwen"></div>
         <div class="mini-doll doll-levi"></div>
+        <div class="mini-doll doll-ella"></div>
+        <div class="mini-doll doll-mia"></div>
       </div>
-    </header>
+    </section>
 
-    <section class="friends-section card">
+    <section class="card friends-section">
       <div class="section-head">
-        <h2>Our Park Friends</h2>
-        <p>Pick a name, save it, and your little one might star in a tale too!</p>
+        <h2>Meet the Park Friends</h2>
+        <p>Nine lovable dolls — plus your little one can star in a story too!</p>
       </div>
 
       <div class="friends-grid">
@@ -89,49 +107,52 @@
           <span>You!</span>
         </div>
       </div>
-
-      <div class="settings">
-        <label for="child-name">Your child's name</label>
-        <div class="name-row">
-          <input id="child-name" type="text" placeholder="Type a name here" maxlength="24" autocomplete="off">
-          <button id="save-name" type="button" class="btn btn-soft">Save</button>
-        </div>
-        <p class="hint">Saved names can appear as the star of a story.</p>
-      </div>
     </section>
 
-    <section id="story-time" class="story-section card" aria-live="polite">
+    <section class="card steps-section">
       <div class="section-head">
-        <h2>Today's Story</h2>
-        <p>Refresh the page or tap the button for a new tale.</p>
+        <h2>How Story Time Works</h2>
+        <p>Three easy steps to a new adventure</p>
       </div>
 
-      <article id="story-card" class="story-card">
-        <div class="character-badge" id="character-badge"></div>
-        <div class="story-doll-wrap">
-          <div id="story-doll" class="doll" aria-hidden="true"></div>
-        </div>
-        <h3 id="story-title"></h3>
-        <div id="story-body" class="story-body"></div>
-        <div class="story-shop">
-          <a
-            href="https://appleparkkids.com/?srsltid=AfmBOoqR38m2IW-x5I55hVAITCQpHzu-LRYU1S2SLIgJCenwOf2YPJiV"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn btn-shop"
-          >
-            ♥ Shop Apple Park Dolls
-          </a>
-        </div>
-      </article>
+      <ol class="steps-list">
+        <li class="step-card">
+          <span class="step-num">1</span>
+          <h3>Enter a name</h3>
+          <p>Add your child's name on the story page so they can be the star.</p>
+        </li>
+        <li class="step-card">
+          <span class="step-num">2</span>
+          <h3>Read a story</h3>
+          <p>Each tale features one doll friend on a cozy Apple Park adventure.</p>
+        </li>
+        <li class="step-card">
+          <span class="step-num">3</span>
+          <h3>Refresh for more</h3>
+          <p>Reload the page or tap the button — a brand-new story appears every time.</p>
+        </li>
+      </ol>
+    </section>
 
-      <footer class="footer">
-        <button id="refresh-btn" type="button" class="btn btn-primary">Tell me another story!</button>
-        <p class="footer-note">Or refresh your browser for a surprise.</p>
-      </footer>
+    <section class="cta-banner card">
+      <h2>Ready for a story?</h2>
+      <p>Grab a blanket, pick a friend, and let the adventure begin.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="story.html">Read a Story Now</a>
+        <a
+          class="btn btn-shop"
+          href="https://appleparkkids.com/?srsltid=AfmBOoqR38m2IW-x5I55hVAITCQpHzu-LRYU1S2SLIgJCenwOf2YPJiV"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          ♥ Shop Apple Park Dolls
+        </a>
+      </div>
     </section>
   </main>
 
-  <script src="story.js"></script>
+  <footer class="site-footer">
+    <p>Made with love for little dreamers · <a href="story.html">Story Time</a></p>
+  </footer>
 </body>
 </html>
