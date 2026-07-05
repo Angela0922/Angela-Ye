@@ -237,6 +237,29 @@ input[type="text"]:focus {
   margin-bottom: 0;
 }
 
+.story-shop {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #e4ece6;
+  text-align: center;
+}
+
+.story-shop a {
+  display: inline-block;
+  padding: 0.85rem 1.35rem;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: #8b4f4a;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.story-shop a:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(212, 132, 127, 0.25);
+}
+
 .footer {
   text-align: center;
   margin-top: 1.5rem;
