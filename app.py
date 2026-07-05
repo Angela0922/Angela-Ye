@@ -8,9 +8,10 @@ from models.schemas import ChatMessage, ChatSession
 from services.character_loader import get_character, load_characters
 from services.chatbot import create_session, process_message
 from services.illustrator import generate_scene_image, get_scene_image_path, scene_emoji, scene_gradient
-from services.image_assets import brand_hero_path, doll_image_source
+from services.image_assets import doll_image_source
 from services.story_generator import generate_story
-from services.video_story import generate_video_story, get_video_path
+from services.video_story import generate_video_story
+from ui.landing import load_landing_css, render_landing_html
 
 st.set_page_config(
     page_title="Apple Park Kids — Story Chat for Your Child",
@@ -198,8 +199,25 @@ CUSTOM_CSS = """
         font-weight: 700 !important;
         border-radius: 12px !important;
     }
+
+    .landing-root section { padding: 2.5rem 0; }
+    .landing-root .hero { padding-top: 1rem; }
+    .chat-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+    }
+    .chat-header-title {
+        font-family: 'Fraunces', serif;
+        font-size: 1.35rem;
+        color: #2E3D2E;
+        font-weight: 700;
+    }
 </style>
 """
+
+LANDING_CSS = f"<style>{load_landing_css()}</style>"
 
 st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
 
@@ -211,46 +229,60 @@ def init_session_state():
         st.session_state.video_path = None
     if "create_video" not in st.session_state:
         st.session_state.create_video = True
+    if "show_chat" not in st.session_state:
+        st.session_state.show_chat = False
 
 
-def render_hero():
-    hero_img = brand_hero_path()
-    col_text, col_img = st.columns([3, 2])
-    with col_text:
-        st.markdown(
-            """
-            <div class="hero-wrap" style="margin-bottom:0;">
-                <div class="brand-pill">Apple Park Kids Story Chat</div>
-                <div class="hero-title">
-                    Tell us about your child,<br>
-                    <em>we'll find their perfect doll &amp; story</em>
-                </div>
-                <p class="hero-subtitle">
-                    Chat with our storyteller about your little one. We'll match them with the right
-                    Apple Park Kids organic cotton doll, show you the product, and create a personalized
-                    bedtime story — free before you buy.
-                </p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-    with col_img:
-        if hero_img:
-            st.image(str(hero_img), use_container_width=True, caption="Apple Park Kids · Organic Cotton Dolls")
-
-
-def render_trust_bar():
+def render_landing_page(characters):
+    st.markdown(LANDING_CSS, unsafe_allow_html=True)
     st.markdown(
         """
-        <div class="trust-bar">
-            <span class="trust-item">💬 Chat-based personalization</span>
-            <span class="trust-item">🧸 Smart doll matching</span>
-            <span class="trust-item">📖 Free bedtime stories</span>
-            <span class="trust-item">🌿 100% GOTS Organic Cotton</span>
+        <div class="nav" style="margin: -1rem -1rem 0; padding: 0 1rem;">
+          <div class="container nav-inner">
+            <div class="logo"><span>🍎</span> Apple Park Kids</div>
+          </div>
         </div>
         """,
         unsafe_allow_html=True,
     )
+
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        if st.button("Start Your Free Story →", type="primary", use_container_width=True):
+            st.session_state.show_chat = True
+            st.rerun()
+
+    st.markdown(render_landing_html(characters), unsafe_allow_html=True)
+
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        if st.button("🍎  Start Chatting — It's Free", type="primary", use_container_width=True):
+            st.session_state.show_chat = True
+            st.rerun()
+
+    st.markdown(
+        """
+        <div class="footer-bar">
+            Wrapped in love, woven with purpose ·
+            <a href="https://appleparkkids.com" target="_blank">appleparkkids.com</a>
+            · Organic cotton dolls &amp; toys for little ones
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_chat_header():
+    col_back, col_title = st.columns([1, 4])
+    with col_back:
+        if st.button("← Home"):
+            st.session_state.show_chat = False
+            st.rerun()
+    with col_title:
+        st.markdown(
+            '<div class="chat-header-title">🍎 Story Chat — tell us about your child</div>',
+            unsafe_allow_html=True,
+        )
 
 
 def render_product_match(session: ChatSession):
@@ -407,8 +439,13 @@ def generate_story_for_session(session: ChatSession) -> ChatSession:
 
 def main():
     init_session_state()
-    render_hero()
-    render_trust_bar()
+    characters = load_characters()
+
+    if not st.session_state.show_chat:
+        render_landing_page(characters)
+        return
+
+    render_chat_header()
 
     session: ChatSession = st.session_state.chat_session
 

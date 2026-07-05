@@ -30,12 +30,29 @@
 
 ## Quick start
 
+### Story chat app (Streamlit)
+
 ```bash
 pip install -r requirements.txt
 streamlit run app.py
 ```
 
-Open [http://localhost:8501](http://localhost:8501).
+Open [http://localhost:8501](http://localhost:8501) — you'll see the **landing page** first, then click through to the story chat.
+
+### Static landing page
+
+Host or open `landing/index.html` for a standalone marketing page. CTA buttons link to the Streamlit app (default `http://localhost:8501`). Override with a query param:
+
+```
+landing/index.html?app=https://your-app-url.com
+```
+
+Serve locally:
+
+```bash
+python3 -m http.server 8080
+# open http://localhost:8080/landing/
+```
 
 ### Generate videos for all dolls at once
 
@@ -68,7 +85,12 @@ cp .env.example .env
 ## Project structure
 
 ```
-├── app.py                          # Streamlit chat UI
+├── app.py                          # Streamlit app (landing → chat flow)
+├── landing/
+│   ├── index.html                  # Standalone marketing landing page
+│   └── styles.css                  # Landing page styles
+├── ui/
+│   └── landing.py                  # Landing HTML renderer for Streamlit
 ├── data/
 │   ├── characters.json             # All 9 Apple Park Kids dolls
 │   └── story_templates.json        # Per-doll bedtime story templates
