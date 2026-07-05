@@ -22,13 +22,17 @@ def scene_gradient(doll: DollCharacter, scene_index: int) -> str:
 
 def scene_emoji(doll: DollCharacter, scene_index: int) -> str:
     extras = {
-        "luna-starlight": ["✨", "🌟", "💫"],
-        "sunny-meadow": ["🌼", "🦋", "🌈"],
-        "captain-whiskers": ["⚓", "🌊", "🏴‍☠️"],
-        "princess-ruby": ["💎", "🌹", "✨"],
-        "cosmo-cloud": ["🪐", "⭐", "🌌"],
+        "alex": ["🌳", "🪲", "🍃"],
+        "ella": ["🫖", "🧁", "💕"],
+        "grady": ["🦸", "🤗", "⭐"],
+        "gwen": ["🎵", "🎶", "🌙"],
+        "levi": ["🏰", "🏖️", "✨"],
+        "luke": ["🎠", "🌤️", "💤"],
+        "mia": ["🙈", "😄", "🎁"],
+        "paloma": ["🍎", "🤝", "💛"],
+        "wren": ["📖", "☕", "🌟"],
     }
-    icons = extras.get(doll.id, ["✨", "🌙", "💤"])
+    icons = extras.get(doll.id, [doll.emoji, "🍎", "🌙"])
     return icons[scene_index % len(icons)]
 
 
@@ -63,10 +67,11 @@ def generate_scene_image(
 
         client = OpenAI(api_key=api_key)
         prompt = (
-            f"Children's book illustration, soft watercolor style, warm and cozy bedtime scene. "
-            f"Featuring doll character {doll.name} ({doll.emoji}) and a child named {story.child_name}. "
+            f"Children's book illustration, soft watercolor style, warm organic cotton doll aesthetic. "
+            f"Apple Park Kids doll character {doll.name} ({doll.appearance or doll.tagline}) "
+            f"with a child named {story.child_name} in sunny Apple Park. "
             f"Scene: {scene.illustration_caption}. "
-            f"Gentle pastel colors, no text, no scary elements, suitable for ages 3-8."
+            f"Gentle pastel colors, GOTS organic feel, no text, no scary elements, ages 3-8."
         )
         response = client.images.generate(
             model=os.getenv("OPENAI_IMAGE_MODEL", "dall-e-3"),

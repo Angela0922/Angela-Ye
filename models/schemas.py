@@ -18,6 +18,7 @@ class DollCharacter:
     emoji: str
     price: float
     purchase_url: str
+    appearance: str = ""
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> DollCharacter:
@@ -51,6 +52,7 @@ class BedtimeStory:
     moral: str = ""
     reading_time_minutes: int = 3
     generated_by: str = "template"
+    video_path: str | None = None
 
     def full_text(self) -> str:
         parts = [self.title, ""]

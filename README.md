@@ -1,87 +1,88 @@
-# DreamDoll Bedtime Stories
+# Apple Park Kids — Personalized Video Bedtime Stories
 
-**AI-generated, child-name-aware bedtime stories** featuring DreamDoll characters — a sales hook that lets parents preview a personalized illustrated story starring their child and the doll they're about to buy.
+**AI-generated, child-name-aware video stories** for every [Apple Park Kids](https://appleparkkids.com) organic cotton doll — a sales hook that lets parents preview a narrated video story starring their child and the doll they're about to buy.
 
-> *"Hype your child's name. Get a short illustrated story starring the doll you are about to buy."*
+> *"Hype your child's name. Get a short video story starring the Apple Park Kids doll you are about to buy."*
+
+## Every doll has a story
+
+| Doll | Personality | Shop |
+|------|-------------|------|
+| **Alex** | Curious critter explorer | [Shop Alex](https://appleparkkids.com/products/park-friends-alex) |
+| **Ella** | Tea party host & friend-gatherer | [Shop Ella](https://appleparkkids.com/products/organic-best-friends-ella) |
+| **Grady** | Helpful hero who cheers up friends | [Shop Grady](https://appleparkkids.com/products/grady-in-caramel) |
+| **Gwen** | Musical songbird & lullaby maker | [Shop Gwen](https://appleparkkids.com/products/park-friends-gwen) |
+| **Levi** | Sandcastle architect extraordinaire | [Shop Levi](https://appleparkkids.com/products/levi-in-sage) |
+| **Luke** | Gentle playground pal | [Shop Luke](https://appleparkkids.com/products/luke-in-marine) |
+| **Mia** | Peek-a-boo surprise lover | [Shop Mia](https://appleparkkids.com/products/mia-in-dusty-rose) |
+| **Paloma** | Kind sharer & turn-taker | [Shop Paloma](https://appleparkkids.com/products/park-friends-paloma) |
+| **Wren** | Cozy story-time friend | [Shop Wren](https://appleparkkids.com/products/apple-park-kids-wren) |
 
 ## How it works
 
-1. Parent enters their **child's name** (and optional age)
-2. They **pick a DreamDoll character** from the catalog
-3. The app generates a **3-scene bedtime story** personalized with the child's name
-4. Each scene shows an **illustration** (gradient cards by default, or DALL-E when enabled)
-5. A **purchase CTA** closes the loop: *"Bring [Doll] home tonight"*
+1. Parent enters their **child's name**
+2. They **pick an Apple Park Kids doll** (all 9 characters)
+3. App generates a **3-scene bedtime story** set in Apple Park
+4. A **narrated video** is built: illustrated slides + voice narration (MP4)
+5. **Shop CTA** links directly to the doll's product page on appleparkkids.com
 
 ## Quick start
 
 ```bash
-# Install dependencies
 pip install -r requirements.txt
-
-# Optional: enable AI-generated unique stories + illustrations
-cp .env.example .env
-# Edit .env and add your OPENAI_API_KEY
-
-# Launch the sales-hook demo
 streamlit run app.py
 ```
 
-Open [http://localhost:8501](http://localhost:8501) in your browser.
+Open [http://localhost:8501](http://localhost:8501).
+
+### Generate videos for all dolls at once
+
+```bash
+python3 scripts/generate_all_videos.py --child-name Emma
+```
+
+Videos are cached in `assets/videos/`.
+
+### Optional: AI-unique stories
+
+```bash
+cp .env.example .env
+# Add OPENAI_API_KEY for GPT-generated unique stories
+```
 
 ## Features
 
-| Feature | Without API key | With `OPENAI_API_KEY` |
-|---------|----------------|----------------------|
-| Personalized child name | Yes | Yes |
-| Doll character stories | Curated templates | Unique AI stories |
-| Scene illustrations | Gradient + emoji cards | DALL-E watercolor art |
-| Purchase CTA | Yes | Yes |
-| Child-safe content | Template + safety filters | Template fallback + filters |
-
-## Doll characters
-
-Five launch characters live in `data/characters.json`:
-
-| Character | Theme | Price |
-|-----------|-------|-------|
-| Luna Starlight | Dreams & moonlit calm | $34.99 |
-| Sunny Meadow | Friendship & gratitude | $32.99 |
-| Captain Whiskers | Gentle bravery | $36.99 |
-| Princess Ruby | Self-confidence & kindness | $38.99 |
-| Cosmo Cloud | Wonder & peaceful sleep | $33.99 |
-
-Edit `data/characters.json` to add your real product SKUs, images, and purchase URLs.
+| Feature | Default (no API key) | With OpenAI |
+|---------|---------------------|-------------|
+| All 9 Apple Park Kids dolls | ✓ | ✓ |
+| Child name personalization | ✓ | ✓ |
+| Narrated video story (MP4) | ✓ | ✓ |
+| Real product URLs & pricing | ✓ | ✓ |
+| Unique AI-written stories | — | ✓ |
+| DALL-E scene illustrations | — | ✓ |
 
 ## Project structure
 
 ```
-├── app.py                      # Streamlit sales-hook UI
+├── app.py                          # Streamlit demo landing page
 ├── data/
-│   └── characters.json         # Doll catalog (personas, colors, prices)
-├── models/
-│   └── schemas.py              # Story, Character, ChildProfile types
+│   ├── characters.json             # All 9 Apple Park Kids dolls
+│   └── story_templates.json        # Per-doll bedtime story templates
 ├── services/
-│   ├── character_loader.py     # Load doll catalog
-│   ├── story_generator.py      # AI + template story engine
-│   ├── illustrator.py          # Scene art (gradient or DALL-E)
-│   └── safety.py               # Name validation & content filters
-├── assets/scenes/              # Cached DALL-E illustrations
-├── requirements.txt
-└── .env.example
+│   ├── story_generator.py          # Story engine (templates + OpenAI)
+│   ├── video_story.py              # MP4 builder (slides + narration)
+│   ├── scene_renderer.py           # Illustrated slide images (Pillow)
+│   └── narrator.py                 # Text-to-speech (gTTS)
+├── scripts/
+│   └── generate_all_videos.py      # Batch-generate all doll videos
+└── assets/videos/                  # Cached MP4 outputs
 ```
 
-## Integrating with your store
+## Requirements
 
-Replace `purchase_url` in each character with your Shopify/WooCommerce product links. The CTA button in `app.py` uses `st.link_button` pointing to that URL.
-
-For embed on a product page, run Streamlit behind a reverse proxy or rebuild the UI in your storefront framework — the story logic in `services/` is framework-agnostic.
-
-## Safety
-
-- Child names are sanitized (letters, spaces, hyphens only)
-- Story content is checked against a blocklist
-- System prompts enforce age-appropriate, calming bedtime tone
-- No child data is persisted by default
+- Python 3.10+
+- **ffmpeg** (for video assembly)
+- Internet access (for gTTS narration)
 
 ## License
 

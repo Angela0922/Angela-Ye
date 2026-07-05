@@ -13,8 +13,11 @@ from services.story_generator import generate_story
 
 def test_characters_load():
     characters = load_characters()
-    assert len(characters) >= 5
-    assert all(c.id and c.name and c.price > 0 for c in characters)
+    assert len(characters) == 9
+    names = {c.name for c in characters}
+    assert names == {"Alex", "Ella", "Grady", "Gwen", "Levi", "Luke", "Mia", "Paloma", "Wren"}
+    assert all(c.price == 55.0 for c in characters)
+    assert all(c.purchase_url.startswith("https://appleparkkids.com") for c in characters)
 
 
 def test_child_name_validation():
@@ -33,6 +36,7 @@ def test_story_generation_all_characters():
         assert story.doll_name == doll.name
         assert len(story.scenes) == 3
         assert "Lily" in story.full_text()
+        assert "Apple Park" in story.full_text() or doll.name in story.full_text()
         assert story.moral
 
 
