@@ -300,6 +300,37 @@ function getStoryPool(character, childName) {
   return pools[character.id];
 }
 
+function getDollFirstName(displayName) {
+  return displayName.split(" ")[0];
+}
+
+/** When a child name is saved, star them in doll stories instead of the doll alone. */
+function personalizeStoryWithChild(story, character, childName) {
+  if (!childName || character.id === "child") {
+    return story;
+  }
+
+  const dollFirst = getDollFirstName(character.displayName);
+  const dollPattern = new RegExp(`\\b${dollFirst.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "g");
+
+  let title = story.title;
+  if (title.includes(dollFirst)) {
+    title = title.replace(dollPattern, childName);
+  } else if (!title.includes(childName)) {
+    title = `${childName}'s ${title}`;
+  }
+
+  const paragraphs = story.paragraphs.map((paragraph, index) => {
+    let text = paragraph.replace(dollPattern, childName);
+    if (index === story.paragraphs.length - 1 && !text.includes(dollFirst)) {
+      text += ` ${dollFirst} cheered for ${childName}.`;
+    }
+    return text;
+  });
+
+  return { title, paragraphs };
+}
+
 function buildRoster(childName) {
   const roster = [...characters];
   if (childName) {
@@ -323,7 +354,11 @@ function renderStory() {
     return;
   }
 
-  const story = pickRandom(stories);
+  const story = personalizeStoryWithChild(
+    pickRandom(stories),
+    character,
+    childName
+  );
   const badge = document.getElementById("character-badge");
   const doll = document.getElementById("story-doll");
   const title = document.getElementById("story-title");
@@ -331,7 +366,11 @@ function renderStory() {
   const card = document.getElementById("story-card");
   const dollClass = character.id === "child" ? "doll-you" : `doll-${character.id}`;
 
-  badge.textContent = `Featuring ${character.displayName}`;
+  if (childName && character.id !== "child") {
+    badge.textContent = `Featuring ${childName} & ${getDollFirstName(character.displayName)}`;
+  } else {
+    badge.textContent = `Featuring ${character.displayName}`;
+  }
   badge.style.background = `${character.color}33`;
   badge.style.color = character.color;
 
@@ -355,7 +394,11 @@ function initSettings() {
   }
 
   saveButton.addEventListener("click", () => {
-    saveChildName(input.value);
+    const name = input.value.trim();
+    if (!name) {
+      return;
+    }
+    saveChildName(name);
     renderStory();
   });
 
