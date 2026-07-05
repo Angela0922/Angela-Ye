@@ -247,6 +247,10 @@ def init_session_state():
             st.session_state.chat_child_name = cleaned
             st.session_state.chat_session = create_session(initial_name=cleaned)
 
+    query_doll = st.query_params.get("doll", "")
+    if query_doll and get_character(query_doll):
+        st.session_state.selected_doll_id = query_doll
+
 
 def _apply_child_name(name: str) -> str | None:
     cleaned = sanitize_child_name(name)

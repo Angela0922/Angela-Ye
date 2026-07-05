@@ -3,200 +3,114 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Apple Park Kids — Personalized Story Chat for Your Child</title>
-  <meta name="description" content="Tell us about your child. We'll match them with the perfect Apple Park Kids organic cotton doll and create a free personalized bedtime story." />
+  <title>Apple Park Kids — Soft Dolls, Sweet Stories</title>
+  <meta name="description" content="Enter your child's name, pick an Apple Park Kids doll, and read a free personalized bedtime story starring them." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;500;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
+<body class="park-page">
+  <div class="sky-bg">
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+    <div class="sun"></div>
+    <div class="hill"></div>
+  </div>
+
   <header class="nav">
     <div class="container nav-inner">
-      <div class="logo"><span>🍎</span> Apple Park Kids</div>
-      <nav class="nav-links">
-        <a href="#how-it-works">How it works</a>
-        <a href="#dolls">Meet the dolls</a>
-        <a href="https://appleparkkids.com" target="_blank" rel="noopener">Shop</a>
-        <a class="btn btn-primary" href="http://localhost:8501" id="app-link">Start Free Story</a>
-      </nav>
+      <div class="logo">Apple Park Kids</div>
+      <a class="btn btn-story-time" href="#" data-app-link>Story Time</a>
     </div>
   </header>
 
-  <section class="hero">
-    <div class="container hero-grid">
-      <div>
-        <div class="pill">Free personalized preview</div>
-        <h1>Soft dolls. Sweet stories.<br><em>Big imaginations.</em></h1>
+  <main>
+    <section class="hero-center">
+      <div class="container">
+        <div class="pill">Welcome to the park!</div>
+        <h1>Soft dolls. <span class="sweet">Sweet</span> stories.<br>Big imaginations.</h1>
         <p class="hero-lead">
-          Organic cotton friends live in Apple Park. Enter your child's name, pick a doll,
-          and read a brand-new bedtime story starring them every time.
+          Meet the Apple Park Kids — organic cotton friends made for cuddles, tea parties,
+          and sunny-day adventures. Enter your child's name, pick a doll, and read a
+          brand-new story starring them every time.
         </p>
-        <article class="doll-card child-star-card" style="display:flex;flex-direction:column;align-items:center;justify-content:center;">
-          <div class="child-star-icon">⭐</div>
-          <h3>Your Child</h3>
-          <p>Stars in the story!</p>
-          <input id="child-name" type="text" placeholder="Enter name here…" maxlength="32"
-            style="width:90%; padding:0.6rem 0.85rem; border:1px solid #e4ddd2; border-radius:999px; font-size:0.95rem; text-align:center; margin-top:0.35rem;" />
-        </article>
         <div class="hero-actions">
-          <a class="btn btn-primary" href="http://localhost:8501" data-app-link>⭐ Start Story Time</a>
-          <a class="btn btn-secondary" href="https://appleparkkids.com" target="_blank" rel="noopener">Shop Dolls</a>
-        </div>
-        <div class="hero-stats">
-          <div class="stat"><strong>9</strong><span>doll friends</span></div>
-          <div class="stat"><strong>Free</strong><span>story preview</span></div>
-          <div class="stat"><strong>100%</strong><span>organic cotton</span></div>
+          <a class="btn btn-yellow" href="#" data-app-link>Start Story Time</a>
+          <a class="btn btn-pink" href="https://appleparkkids.com" target="_blank" rel="noopener">Shop Dolls</a>
         </div>
       </div>
-      <div class="hero-visual">
-        <div class="hero-card">
-          <img src="../assets/dolls/brand-hero.jpg" alt="Apple Park Kids organic cotton dolls" />
+    </section>
+
+    <section class="friends-section">
+      <div class="container">
+        <div class="friends-panel">
+          <h2>Meet the Park Friends</h2>
+          <p class="friends-sub">Nine lovable dolls — plus your little one can star in a story too!</p>
+
+          <div class="friends-grid">
+            <article class="friend-card" data-doll="wren">
+              <img src="https://cdn.shopify.com/s/files/1/0639/4242/6836/files/DSC_8444_1.jpg?v=1779309022" alt="Wren" />
+              <span>Wren</span>
+            </article>
+            <article class="friend-card" data-doll="paloma">
+              <img src="https://cdn.shopify.com/s/files/1/0639/4242/6836/files/Teal_muslin_dress_TMG33_TMG34_TMG35_TMG36_Dancing_Palms_Pink_leggings_TME31_TME32_TME33_TME34_Dancing_Palms_Pink_headband_TME47_Paloma_TMF54_1.jpg?v=1775049592" alt="Paloma" />
+              <span>Paloma</span>
+            </article>
+            <article class="friend-card" data-doll="luke">
+              <img src="https://cdn.shopify.com/s/files/1/0639/4242/6836/products/TP0146.jpg?v=1664397404" alt="Luke" />
+              <span>Luke</span>
+            </article>
+            <article class="friend-card" data-doll="gwen">
+              <img src="https://cdn.shopify.com/s/files/1/0639/4242/6836/files/MUSTARD_MUSLIN_DRESS_WITH_PUFFY_SLEEVES_GWEN_IN_MUSLIN_2_5e165657-a161-4b97-bce0-6a8079def1ff.jpg?v=1775049654" alt="Gwen" />
+              <span>Gwen</span>
+            </article>
+            <article class="friend-card" data-doll="levi">
+              <img src="https://cdn.shopify.com/s/files/1/0639/4242/6836/products/TP0145.jpg?v=1664396737" alt="Levi" />
+              <span>Levi</span>
+            </article>
+            <article class="friend-card" data-doll="alex">
+              <img src="https://cdn.shopify.com/s/files/1/0639/4242/6836/products/tmf56.jpg?v=1653392097" alt="Alex" />
+              <span>Alex</span>
+            </article>
+            <article class="friend-card" data-doll="grady">
+              <img src="https://cdn.shopify.com/s/files/1/0639/4242/6836/products/tp0147.jpg?v=1664403037" alt="Grady" />
+              <span>Grady</span>
+            </article>
+            <article class="friend-card" data-doll="ella">
+              <img src="https://cdn.shopify.com/s/files/1/0639/4242/6836/products/tm982_2.jpg?v=1653388733" alt="Ella" />
+              <span>Ella</span>
+            </article>
+            <article class="friend-card" data-doll="mia">
+              <img src="https://cdn.shopify.com/s/files/1/0639/4242/6836/files/Mia_in_Dusty_Rose_TP0142_2.jpg?v=1775049784" alt="Mia" />
+              <span>Mia</span>
+            </article>
+            <article class="friend-card child-slot selected">
+              <div class="child-star">⭐</div>
+              <span>Your Child</span>
+              <input id="child-name" type="text" placeholder="Name here…" maxlength="32" aria-label="Your child's first name" />
+            </article>
+          </div>
+
+          <p class="story-preview" id="story-preview" hidden>
+            📖 Your story will star <strong id="preview-name"></strong> &amp; <strong id="preview-doll">Wren</strong>
+          </p>
+
+          <div class="panel-actions">
+            <a class="btn btn-yellow btn-lg" href="#" data-app-link>⭐ Start Story Time</a>
+          </div>
         </div>
-        <div class="floating-badge">
-          <strong>🌙 Bedtime stories that sell themselves</strong>
-          <span>Name-aware tales starring your child &amp; their new best friend.</span>
-        </div>
       </div>
-    </div>
-  </section>
-
-  <section id="how-it-works">
-    <div class="container">
-      <div class="section-head">
-        <h2>How it works</h2>
-        <p>Three simple steps from chat to cozy bedtime magic.</p>
-      </div>
-      <div class="steps">
-        <article class="step">
-          <div class="step-num">1</div>
-          <h3>Chat about your child</h3>
-          <p>Share their name, age, favorite things, and personality. Our storyteller listens.</p>
-        </article>
-        <article class="step">
-          <div class="step-num">2</div>
-          <h3>Meet their match</h3>
-          <p>We recommend the perfect Apple Park doll with photo, price, and shop link.</p>
-        </article>
-        <article class="step">
-          <div class="step-num">3</div>
-          <h3>Get their story</h3>
-          <p>A personalized 3-scene bedtime tale — plus optional narrated video — starring them.</p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section class="features">
-    <div class="container">
-      <div class="section-head">
-        <h2>Why parents love it</h2>
-        <p>Organic dolls meet thoughtful storytelling.</p>
-      </div>
-      <div class="feature-grid">
-        <article class="feature">
-          <h3>💬 Conversational matching</h3>
-          <p>No forms to wrestle with — just tell us about your child like you would a friend.</p>
-        </article>
-        <article class="feature">
-          <h3>🧸 Smart doll recommendations</h3>
-          <p>Music lovers meet Gwen. Story lovers meet Wren. Every child gets a thoughtful match.</p>
-        </article>
-        <article class="feature">
-          <h3>📖 Name-personalized stories</h3>
-          <p>Your child's name woven through a gentle Apple Park adventure with their new doll friend.</p>
-        </article>
-        <article class="feature">
-          <h3>🌿 Truly organic &amp; safe</h3>
-          <p>GOTS-certified cotton, hypoallergenic fill, plastic-free — made for little ones.</p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section id="dolls">
-    <div class="container">
-      <div class="section-head">
-        <h2>Meet the Apple Park Kids</h2>
-        <p>Nine lovable dolls — plus your little one can star in a story too!</p>
-      </div>
-      <div class="doll-grid">
-        <article class="doll-card">
-          <img src="https://cdn.shopify.com/s/files/1/0639/4242/6836/products/tmf56.jpg?v=1653392097" alt="Alex" loading="lazy" />
-          <div class="doll-body"><h3>Alex</h3><p>Curious · Explorer who befriends every critter in Apple Park</p><div class="doll-price">$55</div></div>
-        </article>
-        <article class="doll-card">
-          <img src="https://cdn.shopify.com/s/files/1/0639/4242/6836/products/tm982_2.jpg?v=1653388733" alt="Ella" loading="lazy" />
-          <div class="doll-body"><h3>Ella</h3><p>Social · Tea parties and sleepovers with friends</p><div class="doll-price">$55</div></div>
-        </article>
-        <article class="doll-card">
-          <img src="https://cdn.shopify.com/s/files/1/0639/4242/6836/products/tp0147.jpg?v=1664403037" alt="Grady" loading="lazy" />
-          <div class="doll-body"><h3>Grady</h3><p>Helpful · Hero who cheers up friends in need</p><div class="doll-price">$55</div></div>
-        </article>
-        <article class="doll-card">
-          <img src="https://cdn.shopify.com/s/files/1/0639/4242/6836/files/MUSTARD_MUSLIN_DRESS_WITH_PUFFY_SLEEVES_GWEN_IN_MUSLIN_2_5e165657-a161-4b97-bce0-6a8079def1ff.jpg?v=1775049654" alt="Gwen" loading="lazy" />
-          <div class="doll-body"><h3>Gwen</h3><p>Musical · Sweet songbird who hums lullabies</p><div class="doll-price">$55</div></div>
-        </article>
-        <article class="doll-card">
-          <img src="https://cdn.shopify.com/s/files/1/0639/4242/6836/products/TP0145.jpg?v=1664396737" alt="Levi" loading="lazy" />
-          <div class="doll-body"><h3>Levi</h3><p>Imaginative · Builder of extraordinary sandcastles</p><div class="doll-price">$55</div></div>
-        </article>
-        <article class="doll-card">
-          <img src="https://cdn.shopify.com/s/files/1/0639/4242/6836/products/TP0146.jpg?v=1664397404" alt="Luke" loading="lazy" />
-          <div class="doll-body"><h3>Luke</h3><p>Gentle · Playground pal who gives the best pushes</p><div class="doll-price">$55</div></div>
-        </article>
-        <article class="doll-card">
-          <img src="https://cdn.shopify.com/s/files/1/0639/4242/6836/files/Mia_in_Dusty_Rose_TP0142_2.jpg?v=1775049784" alt="Mia" loading="lazy" />
-          <div class="doll-body"><h3>Mia</h3><p>Playful · Peek-a-boo surprise lover</p><div class="doll-price">$55</div></div>
-        </article>
-        <article class="doll-card">
-          <img src="https://cdn.shopify.com/s/files/1/0639/4242/6836/files/Teal_muslin_dress_TMG33_TMG34_TMG35_TMG36_Dancing_Palms_Pink_leggings_TME31_TME32_TME33_TME34_Dancing_Palms_Pink_headband_TME47_Paloma_TMF54_1.jpg?v=1775049592" alt="Paloma" loading="lazy" />
-          <div class="doll-body"><h3>Paloma</h3><p>Kind · Superpower is sharing and taking turns</p><div class="doll-price">$55</div></div>
-        </article>
-        <article class="doll-card">
-          <img src="https://cdn.shopify.com/s/files/1/0639/4242/6836/files/DSC_8444_1.jpg?v=1779309022" alt="Wren" loading="lazy" />
-          <div class="doll-body"><h3>Wren</h3><p>Cozy · Story-time friend for tea parties &amp; adventures</p><div class="doll-price">$55</div></div>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <div class="container">
-      <div class="cta-band">
-        <h2>Ready to find their perfect friend?</h2>
-        <p>Start a free chat, get a doll match with product photo, and preview a bedtime story tonight.</p>
-        <a class="btn btn-primary" href="http://localhost:8501" data-app-link>Start Your Free Story →</a>
-      </div>
-    </div>
-  </section>
+    </section>
+  </main>
 
   <footer class="footer">
     <div class="container">
       Wrapped in love, woven with purpose ·
       <a href="https://appleparkkids.com" target="_blank" rel="noopener">appleparkkids.com</a>
-      · Organic cotton dolls &amp; toys for little ones
     </div>
   </footer>
 
-  <script>
-  (function () {
-    var params = new URLSearchParams(window.location.search);
-    var appUrl = params.get("app") || "http://localhost:8501";
-    var nameInput = document.getElementById("child-name");
-    document.querySelectorAll("[data-app-link], #app-link").forEach(function (el) {
-      el.addEventListener("click", function (event) {
-        event.preventDefault();
-        var name = nameInput && nameInput.value.trim();
-        var url = appUrl;
-        if (name) {
-          url += (url.indexOf("?") >= 0 ? "&" : "?") + "name=" + encodeURIComponent(name);
-        }
-        window.location.href = url;
-      });
-      el.href = appUrl;
-    });
-  })();
-  </script>
+  <script src="app.js"></script>
 </body>
 </html>

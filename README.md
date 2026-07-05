@@ -41,17 +41,23 @@ Open [http://localhost:8501](http://localhost:8501) — you'll see the **landing
 
 ### Static landing page
 
-Host or open `landing/index.html` for a standalone marketing page. CTA buttons link to the Streamlit app (default `http://localhost:8501`). Override with a query param:
-
-```
-landing/index.html?app=https://your-app-url.com
-```
-
-Serve locally:
+Open **`landing/index.html`** — a standalone marketing page matching the Apple Park Story Time design.
 
 ```bash
 python3 -m http.server 8080
-# open http://localhost:8080/landing/
+# Open http://localhost:8080/landing/
+```
+
+Features:
+- Sky gradient hero: "Soft dolls. Sweet stories. Big imaginations."
+- **Your Child** name slot in the Park Friends grid
+- Doll picker with dashed selection border
+- **Start Story Time** → opens the Streamlit app with `?name=Emma&doll=wren`
+
+Override the app URL:
+
+```
+landing/index.html?app=https://your-app-url.com&name=Emma&doll=wren
 ```
 
 ### Generate videos for all dolls at once
