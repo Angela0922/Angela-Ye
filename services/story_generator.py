@@ -65,7 +65,20 @@ def generate_template_story(child: ChildProfile, doll: DollCharacter) -> Bedtime
 
 def _build_llm_prompt(child: ChildProfile, doll: DollCharacter) -> str:
     age_note = f"They are {child.age} years old." if child.age else ""
+    interests_note = ""
+    if child.interests:
+        interests_note = f"Interests: {', '.join(child.interests)}."
+    traits_note = ""
+    if child.personality_traits:
+        traits_note = f"Personality: {', '.join(child.personality_traits)}."
+    bedtime_note = ""
+    if child.bedtime_challenge:
+        bedtime_note = f"Bedtime context: {child.bedtime_challenge}."
+    favorites_note = ""
+    if child.favorite_things:
+        favorites_note = f"Favorite things: {child.favorite_things}."
     return f"""Write a short, gentle bedtime story for a child named {child.display_name()}. {age_note}
+{interests_note} {traits_note} {favorites_note} {bedtime_note}
 
 The story stars "{doll.name}" from Apple Park Kids — an organic cotton doll brand.
 Character: {doll.tagline}

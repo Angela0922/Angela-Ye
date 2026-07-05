@@ -16,6 +16,16 @@ def doll_image_path(doll: DollCharacter) -> Path | None:
     return None
 
 
+def doll_image_source(doll: DollCharacter) -> str | Path | None:
+    """Return local path or remote URL for doll product image."""
+    local = doll_image_path(doll)
+    if local:
+        return local
+    if doll.image_url:
+        return doll.image_url
+    return None
+
+
 def brand_hero_path() -> Path | None:
     path = ROOT / "assets" / "dolls" / "brand-hero.jpg"
     return path if path.exists() else None

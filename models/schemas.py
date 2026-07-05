@@ -31,12 +31,53 @@ class DollCharacter:
 
 @dataclass
 class ChildProfile:
-    name: str
+    name: str = ""
     age: int | None = None
+    interests: list[str] = field(default_factory=list)
+    personality_traits: list[str] = field(default_factory=list)
+    bedtime_challenge: str | None = None
+    favorite_things: str = ""
+    notes: str = ""
 
     def display_name(self) -> str:
         cleaned = self.name.strip()
         return cleaned[:1].upper() + cleaned[1:] if cleaned else "Your Child"
+
+    def has_name(self) -> bool:
+        return bool(self.name.strip())
+
+    def has_personality_info(self) -> bool:
+        return bool(
+            self.interests
+            or self.personality_traits
+            or self.favorite_things.strip()
+            or self.bedtime_challenge
+            or self.notes.strip()
+        )
+
+
+@dataclass
+class DollRecommendation:
+    doll_id: str
+    doll_name: str
+    reason: str
+    match_score: float = 0.0
+    alternate_ids: list[str] = field(default_factory=list)
+
+
+@dataclass
+class ChatMessage:
+    role: str
+    content: str
+
+
+@dataclass
+class ChatSession:
+    messages: list[ChatMessage] = field(default_factory=list)
+    profile: ChildProfile = field(default_factory=ChildProfile)
+    phase: str = "greeting"
+    recommendation: DollRecommendation | None = None
+    story: BedtimeStory | None = None
 
 
 @dataclass

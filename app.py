@@ -1,21 +1,19 @@
-"""Apple Park Kids — personalized video bedtime stories for every doll."""
-
 from __future__ import annotations
 
 import os
 
 import streamlit as st
 
-from models.schemas import ChildProfile
+from models.schemas import ChatMessage, ChatSession
 from services.character_loader import get_character, load_characters
+from services.chatbot import create_session, process_message
 from services.illustrator import generate_scene_image, get_scene_image_path, scene_emoji, scene_gradient
-from services.image_assets import brand_hero_path, doll_image_path
-from services.safety import is_valid_child_name, sanitize_child_name
+from services.image_assets import brand_hero_path, doll_image_source
 from services.story_generator import generate_story
 from services.video_story import generate_video_story, get_video_path
 
 st.set_page_config(
-    page_title="Apple Park Kids — A Bedtime Story Just for Your Child",
+    page_title="Apple Park Kids — Story Chat for Your Child",
     page_icon="🍎",
     layout="wide",
     initial_sidebar_state="collapsed",
@@ -34,7 +32,6 @@ CUSTOM_CSS = """
         max-width: 1100px;
     }
 
-    /* ── Hero ── */
     .hero-wrap {
         background: linear-gradient(135deg, #EAF2E6 0%, #F5F0E8 50%, #EDE8DF 100%);
         border-radius: 24px;
@@ -86,17 +83,7 @@ CUSTOM_CSS = """
         max-width: 620px;
         margin: 0;
     }
-    .hero-quote {
-        font-family: 'Fraunces', serif;
-        font-style: italic;
-        font-size: 0.95rem;
-        color: #7A8F72;
-        margin-top: 1.2rem;
-        padding-top: 1rem;
-        border-top: 1px solid #D8E4D0;
-    }
 
-    /* ── Trust bar ── */
     .trust-bar {
         display: flex;
         flex-wrap: wrap;
@@ -114,120 +101,40 @@ CUSTOM_CSS = """
         font-weight: 600;
     }
 
-    /* ── Steps ── */
-    .steps-row {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 1rem;
-        margin-bottom: 2rem;
-    }
-    @media (max-width: 700px) {
-        .steps-row { grid-template-columns: 1fr; }
-    }
-    .step-card {
-        background: #fff;
-        border: 1px solid #E4DDD2;
-        border-radius: 16px;
-        padding: 1.2rem;
-        text-align: center;
-    }
-    .step-num {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 28px; height: 28px;
-        background: #5C7A4A;
-        color: #fff;
-        border-radius: 50%;
-        font-family: 'Nunito', sans-serif;
-        font-weight: 700;
-        font-size: 0.85rem;
-        margin-bottom: 0.5rem;
-    }
-    .step-title {
-        font-family: 'Fraunces', serif;
-        font-size: 1rem;
-        color: #2E3D2E;
-        font-weight: 700;
-        margin-bottom: 0.3rem;
-    }
-    .step-desc {
-        font-family: 'Nunito', sans-serif;
-        font-size: 0.82rem;
-        color: #6B7B6B;
-        line-height: 1.45;
-    }
-
-    /* ── Form panel ── */
-    .form-panel {
+    .chat-panel {
         background: #fff;
         border: 1px solid #E4DDD2;
         border-radius: 20px;
-        padding: 1.5rem;
+        padding: 1.25rem 1.25rem 0.5rem;
         margin-bottom: 1.5rem;
     }
-    .section-label {
-        font-family: 'Fraunces', serif;
-        font-size: 1.25rem;
-        color: #2E3D2E;
-        font-weight: 700;
-        margin-bottom: 0.25rem;
+
+    .product-card {
+        background: #fff;
+        border: 2px solid #5C7A4A;
+        border-radius: 20px;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
     }
-    .section-hint {
+    .product-title {
+        font-family: 'Fraunces', serif;
+        font-size: 1.4rem;
+        color: #2E3D2E;
+        margin-bottom: 0.5rem;
+    }
+    .product-reason {
         font-family: 'Nunito', sans-serif;
-        font-size: 0.85rem;
-        color: #7A8A7A;
+        color: #5A6B5A;
+        line-height: 1.6;
         margin-bottom: 1rem;
     }
-
-    /* ── Doll cards ── */
-    .doll-card {
-        background: #FAF7F2;
-        border: 2px solid #E4DDD2;
-        border-radius: 14px;
-        padding: 0.85rem 0.6rem;
-        text-align: center;
-        min-height: 155px;
-        transition: border-color 0.15s;
-    }
-    .doll-card.selected {
-        border-color: #5C7A4A;
-        background: #EEF5EA;
-        box-shadow: 0 0 0 3px rgba(92,122,74,0.12);
-    }
-    .doll-photo-wrap {
-        border-radius: 12px;
-        overflow: hidden;
-        margin-bottom: 0.5rem;
-        background: #fff;
-        border: 1px solid #E4DDD2;
-    }
-    .doll-card.selected .doll-photo-wrap {
-        border-color: #5C7A4A;
-        box-shadow: 0 0 0 2px rgba(92,122,74,0.25);
-    }
-    .doll-name {
+    .price-tag {
         font-family: 'Fraunces', serif;
-        font-size: 1rem;
-        color: #2E3D2E;
-        font-weight: 700;
-    }
-    .doll-trait {
-        font-family: 'Nunito', sans-serif;
-        font-size: 0.7rem;
-        color: #7A8A7A;
-        margin-top: 0.2rem;
-        line-height: 1.3;
-    }
-    .doll-price {
-        font-family: 'Nunito', sans-serif;
-        font-size: 0.8rem;
+        font-size: 1.8rem;
         color: #5C7A4A;
         font-weight: 700;
-        margin-top: 0.35rem;
     }
 
-    /* ── Results ── */
     .result-header {
         background: linear-gradient(135deg, #5C7A4A, #7D9B76);
         color: #fff;
@@ -256,15 +163,6 @@ CUSTOM_CSS = """
         margin-bottom: 1rem;
         border: 1px solid #E4DDD2;
     }
-    .scene-illustration {
-        border-radius: 12px;
-        min-height: 180px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 4rem;
-        margin-bottom: 1rem;
-    }
     .scene-title {
         font-family: 'Fraunces', serif;
         font-size: 1.2rem;
@@ -276,39 +174,6 @@ CUSTOM_CSS = """
         font-size: 1rem;
         color: #3D4F3D;
         line-height: 1.7;
-    }
-
-    .cta-box {
-        background: #fff;
-        border: 2px solid #5C7A4A;
-        border-radius: 20px;
-        padding: 2rem;
-        text-align: center;
-        margin-top: 1.5rem;
-    }
-    .cta-title {
-        font-family: 'Fraunces', serif;
-        font-size: 1.5rem;
-        color: #2E3D2E;
-    }
-    .cta-text {
-        font-family: 'Nunito', sans-serif;
-        color: #5A6B5A;
-        font-size: 0.95rem;
-        line-height: 1.55;
-        margin: 0.5rem 0 1rem;
-    }
-    .price-tag {
-        font-family: 'Fraunces', serif;
-        font-size: 2rem;
-        color: #5C7A4A;
-        font-weight: 700;
-    }
-    .organic-note {
-        font-family: 'Nunito', sans-serif;
-        font-size: 0.78rem;
-        color: #8A9A82;
-        margin-top: 0.5rem;
     }
 
     .footer-bar {
@@ -326,18 +191,12 @@ CUSTOM_CSS = """
     #MainMenu { visibility: hidden; }
     footer { visibility: hidden; }
 
-    /* Streamlit button polish */
     .stButton > button[kind="primary"] {
         background: #5C7A4A !important;
         border-color: #5C7A4A !important;
         font-family: 'Nunito', sans-serif !important;
         font-weight: 700 !important;
         border-radius: 12px !important;
-        padding: 0.6rem 1.2rem !important;
-    }
-    .stButton > button[kind="primary"]:hover {
-        background: #4A6340 !important;
-        border-color: #4A6340 !important;
     }
 </style>
 """
@@ -345,192 +204,85 @@ CUSTOM_CSS = """
 st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
 
 
+def init_session_state():
+    if "chat_session" not in st.session_state:
+        st.session_state.chat_session = create_session()
+    if "video_path" not in st.session_state:
+        st.session_state.video_path = None
+    if "create_video" not in st.session_state:
+        st.session_state.create_video = True
+
+
 def render_hero():
     hero_img = brand_hero_path()
-    if hero_img:
-        col_text, col_img = st.columns([3, 2])
-        with col_text:
-            st.markdown(
-                """
-                <div class="hero-wrap" style="margin-bottom:0;">
-                    <div class="brand-pill">Apple Park Kids</div>
-                    <div class="hero-title">
-                        A bedtime video story starring<br>
-                        <em>your child</em> &amp; their new best friend
-                    </div>
-                    <p class="hero-subtitle">
-                        Type your little one's name, pick an organic cotton doll, and watch a
-                        personalized narrated story come to life — free, before you buy.
-                    </p>
-                    <p class="hero-quote">
-                        "A perfect day in Apple Park has already begun."
-                    </p>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
-        with col_img:
-            st.image(str(hero_img), use_container_width=True, caption="Apple Park Kids · Organic Cotton Dolls")
-    else:
+    col_text, col_img = st.columns([3, 2])
+    with col_text:
         st.markdown(
             """
-            <div class="hero-wrap">
-                <div class="brand-pill">Apple Park Kids</div>
+            <div class="hero-wrap" style="margin-bottom:0;">
+                <div class="brand-pill">Apple Park Kids Story Chat</div>
                 <div class="hero-title">
-                    A bedtime video story starring<br>
-                    <em>your child</em> &amp; their new best friend
+                    Tell us about your child,<br>
+                    <em>we'll find their perfect doll &amp; story</em>
                 </div>
                 <p class="hero-subtitle">
-                    Type your little one's name, pick an organic cotton doll, and watch a
-                    personalized narrated story come to life — free, before you buy.
-                </p>
-                <p class="hero-quote">
-                    "A perfect day in Apple Park has already begun."
+                    Chat with our storyteller about your little one. We'll match them with the right
+                    Apple Park Kids organic cotton doll, show you the product, and create a personalized
+                    bedtime story — free before you buy.
                 </p>
             </div>
             """,
             unsafe_allow_html=True,
         )
+    with col_img:
+        if hero_img:
+            st.image(str(hero_img), use_container_width=True, caption="Apple Park Kids · Organic Cotton Dolls")
 
 
 def render_trust_bar():
     st.markdown(
         """
         <div class="trust-bar">
+            <span class="trust-item">💬 Chat-based personalization</span>
+            <span class="trust-item">🧸 Smart doll matching</span>
+            <span class="trust-item">📖 Free bedtime stories</span>
             <span class="trust-item">🌿 100% GOTS Organic Cotton</span>
-            <span class="trust-item">🚫 Plastic-Free &amp; Hypoallergenic</span>
-            <span class="trust-item">🎬 Free Personalized Video Preview</span>
-            <span class="trust-item">🧸 9 Inclusive Doll Characters</span>
         </div>
         """,
         unsafe_allow_html=True,
     )
 
 
-def render_how_it_works():
+def render_product_match(session: ChatSession):
+    if not session.recommendation:
+        return
+
+    doll = get_character(session.recommendation.doll_id)
+    if not doll:
+        return
+
+    child_name = session.profile.display_name()
+    img = doll_image_source(doll)
+
+    st.markdown('<div class="product-card">', unsafe_allow_html=True)
     st.markdown(
-        """
-        <div class="steps-row">
-            <div class="step-card">
-                <div class="step-num">1</div>
-                <div class="step-title">Say their name</div>
-                <div class="step-desc">Enter your child's first name — it appears throughout the story and narration.</div>
-            </div>
-            <div class="step-card">
-                <div class="step-num">2</div>
-                <div class="step-title">Pick a doll</div>
-                <div class="step-desc">Choose from Alex, Ella, Grady, Gwen, Levi, Luke, Mia, Paloma, or Wren.</div>
-            </div>
-            <div class="step-card">
-                <div class="step-num">3</div>
-                <div class="step-title">Watch the magic</div>
-                <div class="step-desc">A narrated video bedtime story plays — starring your child and their new friend.</div>
-            </div>
-        </div>
-        """,
+        f'<div class="product-title">Perfect match for {child_name}: {doll.name}</div>',
+        unsafe_allow_html=True,
+    )
+    st.markdown(
+        f'<div class="product-reason">{session.recommendation.reason}</div>',
         unsafe_allow_html=True,
     )
 
-
-def render_doll_picker(characters: list, selected_id: str | None) -> str | None:
-    st.markdown('<div class="section-label">Meet the Apple Park Kids</div>', unsafe_allow_html=True)
-    st.markdown(
-        '<div class="section-hint">Each doll has a unique personality and their own bedtime story.</div>',
-        unsafe_allow_html=True,
-    )
-
-    picked = selected_id
-    cols_per_row = 3
-
-    for row_start in range(0, len(characters), cols_per_row):
-        row_chars = characters[row_start : row_start + cols_per_row]
-        cols = st.columns(cols_per_row)
-        for col, doll in zip(cols, row_chars):
-            is_selected = doll.id == selected_id
-            card_class = "doll-card selected" if is_selected else "doll-card"
-            trait = doll.personality[0].title() if doll.personality else ""
-            with col:
-                img_path = doll_image_path(doll)
-                if img_path:
-                    st.image(str(img_path), use_container_width=True)
-                st.markdown(
-                    f'<div class="{card_class}">'
-                    f'<div class="doll-name">{doll.name}</div>'
-                    f'<div class="doll-trait">{trait}</div>'
-                    f'<div class="doll-price">${doll.price:.0f}</div>'
-                    f"</div>",
-                    unsafe_allow_html=True,
-                )
-                label = f"{'✓ ' if is_selected else ''}Choose {doll.name}"
-                if st.button(label, key=f"pick_{doll.id}", use_container_width=True):
-                    picked = doll.id
-
-    return picked
-
-
-def render_video(story):
-    video_path = get_video_path(story)
-    if video_path:
-        st.video(str(video_path))
-    else:
-        st.info("Video generating… this takes about 30–60 seconds on first run.")
-
-
-def render_story(story, doll, generate_images: bool):
-    for index, scene in enumerate(story.scenes):
-        image_path = get_scene_image_path(story, scene, index)
-        if generate_images and image_path is None:
-            with st.spinner(f"Painting scene {index + 1}..."):
-                image_path = generate_scene_image(story, scene, doll, index)
-
-        gradient = scene_gradient(doll, index)
-        emoji = scene_emoji(doll, index)
-
-        st.markdown('<div class="scene-card">', unsafe_allow_html=True)
-
-        if image_path:
-            st.image(str(image_path), caption=scene.illustration_caption, use_container_width=True)
-        else:
-            doll_img = doll_image_path(doll)
-            if doll_img:
-                st.image(str(doll_img), caption=scene.illustration_caption, use_container_width=True)
-            else:
-                st.markdown(
-                    f'<div class="scene-illustration" style="background:{gradient};">'
-                    f'<span title="{scene.illustration_caption}">{emoji}</span></div>',
-                    unsafe_allow_html=True,
-                )
-                st.caption(scene.illustration_caption)
-
-        st.markdown(f'<div class="scene-title">{scene.title}</div>', unsafe_allow_html=True)
-        st.markdown(f'<div class="scene-text">{scene.text}</div>', unsafe_allow_html=True)
-        st.markdown("</div>", unsafe_allow_html=True)
-
-    if story.moral:
-        st.success(f"**Sweet dreams, {story.child_name}.** {story.moral}")
-
-
-def render_cta(doll, child_name: str):
-    img_path = doll_image_path(doll)
-    if img_path:
-        c1, c2, c3 = st.columns([1, 1, 1])
-        with c2:
-            st.image(str(img_path), use_container_width=True, caption=f"{doll.name} — Apple Park Kids")
-
-    st.markdown(
-        f'<div class="cta-box">'
-        f'<div class="cta-title">{child_name} &amp; {doll.name} — best friends already?</div>'
-        f'<div class="cta-text">'
-        f"Bring home <strong>{doll.name}</strong> tonight. Handcrafted from 100% GOTS organic cotton "
-        f"with naturally hypoallergenic corn fiber fill — the doll who already knows {child_name}'s name."
-        f"</div>"
-        f'<div class="price-tag">${doll.price:.0f}</div>'
-        f'<div class="organic-note">Free shipping on orders $75+ · 30-day happiness guarantee</div>'
-        f"</div>",
-        unsafe_allow_html=True,
-    )
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
+    col_img, col_info = st.columns([1, 1])
+    with col_img:
+        if img:
+            st.image(str(img), use_container_width=True, caption=f"{doll.name} — Apple Park Kids")
+    with col_info:
+        st.markdown(f"**{doll.tagline}**")
+        st.markdown(f"**Themes:** {', '.join(doll.themes)}")
+        st.markdown(f'<div class="price-tag">${doll.price:.0f}</div>', unsafe_allow_html=True)
+        st.caption("100% GOTS organic cotton · hypoallergenic · plastic-free")
         st.link_button(
             f"Shop {doll.name} on AppleParkKids.com",
             doll.purchase_url,
@@ -538,8 +290,179 @@ def render_cta(doll, child_name: str):
             type="primary",
         )
 
+    if session.recommendation.alternate_ids:
+        st.markdown("**You might also love:**")
+        alt_cols = st.columns(len(session.recommendation.alternate_ids))
+        for col, alt_id in zip(alt_cols, session.recommendation.alternate_ids):
+            alt_doll = get_character(alt_id)
+            if not alt_doll:
+                continue
+            with col:
+                alt_img = doll_image_source(alt_doll)
+                if alt_img:
+                    st.image(str(alt_img), use_container_width=True)
+                st.caption(f"{alt_doll.name} · ${alt_doll.price:.0f}")
+                st.link_button(f"View {alt_doll.name}", alt_doll.purchase_url, use_container_width=True)
 
-def render_footer():
+    st.markdown("</div>", unsafe_allow_html=True)
+
+
+def render_chat(session: ChatSession):
+    st.markdown('<div class="chat-panel">', unsafe_allow_html=True)
+
+    for message in session.messages:
+        with st.chat_message("assistant" if message.role == "assistant" else "user"):
+            st.markdown(message.content)
+
+    st.markdown("</div>", unsafe_allow_html=True)
+
+
+def render_story_results(session: ChatSession, generate_images: bool):
+    story = session.story
+    if not story:
+        return
+
+    doll = get_character(story.doll_id)
+    if not doll:
+        return
+
+    st.markdown(
+        f'<div class="result-header">'
+        f"<h2>🌙 {story.title}</h2>"
+        f"<p>Starring <strong>{story.child_name}</strong> "
+        f"&amp; <strong>{doll.name}</strong> · Apple Park</p>"
+        f"</div>",
+        unsafe_allow_html=True,
+    )
+
+    video_path = st.session_state.video_path or story.video_path
+    if video_path and os.path.exists(video_path):
+        st.video(str(video_path))
+        with open(video_path, "rb") as handle:
+            st.download_button(
+                "⬇️ Download video (MP4)",
+                handle.read(),
+                file_name=f"{story.child_name}-{doll.id}-apple-park-story.mp4",
+                mime="video/mp4",
+                use_container_width=True,
+            )
+
+    with st.expander("📖 Read the full story", expanded=True):
+        for index, scene in enumerate(story.scenes):
+            image_path = get_scene_image_path(story, scene, index)
+            if generate_images and image_path is None:
+                with st.spinner(f"Painting scene {index + 1}..."):
+                    image_path = generate_scene_image(story, scene, doll, index)
+
+            st.markdown('<div class="scene-card">', unsafe_allow_html=True)
+            if image_path:
+                st.image(str(image_path), caption=scene.illustration_caption, use_container_width=True)
+            else:
+                img = doll_image_source(doll)
+                if img:
+                    st.image(str(img), caption=scene.illustration_caption, use_container_width=True)
+                else:
+                    gradient = scene_gradient(doll, index)
+                    emoji = scene_emoji(doll, index)
+                    st.markdown(
+                        f'<div style="background:{gradient};border-radius:12px;'
+                        f'min-height:140px;display:flex;align-items:center;'
+                        f'justify-content:center;font-size:3rem;">{emoji}</div>',
+                        unsafe_allow_html=True,
+                    )
+
+            st.markdown(f'<div class="scene-title">{scene.title}</div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="scene-text">{scene.text}</div>', unsafe_allow_html=True)
+            st.markdown("</div>", unsafe_allow_html=True)
+
+        if story.moral:
+            st.success(f"**Sweet dreams, {story.child_name}.** {story.moral}")
+
+    render_product_match(session)
+
+
+def generate_story_for_session(session: ChatSession) -> ChatSession:
+    if not session.recommendation:
+        return session
+
+    doll = get_character(session.recommendation.doll_id)
+    if not doll or not session.profile.has_name():
+        return session
+
+    with st.spinner(f"Writing {session.profile.display_name()} & {doll.name}'s story…"):
+        session.story = generate_story(session.profile, doll)
+
+    if st.session_state.create_video and session.story:
+        with st.spinner("Creating narrated video — about a minute on first run…"):
+            try:
+                video = generate_video_story(session.story, doll)
+                st.session_state.video_path = str(video)
+                session.story.video_path = str(video)
+            except Exception as exc:
+                st.warning(f"Video failed: {exc}. Story text is still available below.")
+
+    session.phase = "story_generated"
+    return session
+
+
+def main():
+    init_session_state()
+    render_hero()
+    render_trust_bar()
+
+    session: ChatSession = st.session_state.chat_session
+
+    with st.expander("Options"):
+        st.session_state.create_video = st.checkbox(
+            "Create narrated video story (MP4)",
+            value=st.session_state.create_video,
+        )
+        generate_images = st.checkbox(
+            "AI illustrations (requires OpenAI API key)",
+            value=False,
+            key="generate_images",
+        )
+        if os.getenv("OPENAI_API_KEY"):
+            st.caption("✨ AI chat, story generation, and doll matching enabled")
+        else:
+            st.caption("Using guided chat and curated story templates")
+
+    render_chat(session)
+    render_product_match(session)
+
+    if session.phase in ("story_ready", "recommended", "story_generated") and session.recommendation:
+        doll = get_character(session.recommendation.doll_id)
+        if doll and not session.story:
+            if st.button("🎬 Create My Child's Bedtime Story", type="primary", use_container_width=True):
+                st.session_state.chat_session = generate_story_for_session(session)
+                st.rerun()
+
+    if session.story:
+        render_story_results(session, generate_images=st.session_state.get("generate_images", False))
+
+    if prompt := st.chat_input("Tell me about your child…"):
+        updated_session, _, _ = process_message(session, prompt)
+
+        if updated_session.phase == "generating_story":
+            updated_session = generate_story_for_session(updated_session)
+            doll_name = (
+                updated_session.recommendation.doll_name
+                if updated_session.recommendation
+                else "their new friend"
+            )
+            updated_session.messages.append(
+                ChatMessage(
+                    role="assistant",
+                    content=(
+                        f"Here's {updated_session.profile.display_name()}'s bedtime story! "
+                        f"Scroll down to read it, watch the video, and meet {doll_name}."
+                    ),
+                )
+            )
+
+        st.session_state.chat_session = updated_session
+        st.rerun()
+
     st.markdown(
         """
         <div class="footer-bar">
@@ -550,144 +473,6 @@ def render_footer():
         """,
         unsafe_allow_html=True,
     )
-
-
-def main():
-    render_hero()
-    render_trust_bar()
-    render_how_it_works()
-
-    characters = load_characters()
-
-    if "selected_doll_id" not in st.session_state:
-        st.session_state.selected_doll_id = characters[0].id
-    if "story" not in st.session_state:
-        st.session_state.story = None
-    if "video_path" not in st.session_state:
-        st.session_state.video_path = None
-
-    st.markdown('<div class="form-panel">', unsafe_allow_html=True)
-
-    col_name, col_age = st.columns([2, 1])
-    with col_name:
-        st.markdown('<div class="section-label">Your child\'s first name</div>', unsafe_allow_html=True)
-        child_name = st.text_input(
-            "Child's first name",
-            placeholder="e.g. Emma, Noah, Sofia…",
-            label_visibility="collapsed",
-        )
-    with col_age:
-        st.markdown('<div class="section-label">Age</div>', unsafe_allow_html=True)
-        child_age = st.number_input("Age", min_value=1, max_value=12, value=5, step=1, label_visibility="collapsed")
-
-    st.session_state.selected_doll_id = render_doll_picker(characters, st.session_state.selected_doll_id)
-
-    selected_doll = get_character(st.session_state.selected_doll_id)
-    if selected_doll and child_name:
-        cleaned_preview = sanitize_child_name(child_name)
-        if is_valid_child_name(cleaned_preview):
-            preview_name = cleaned_preview[:1].upper() + cleaned_preview[1:]
-            preview_col1, preview_col2 = st.columns([1, 2])
-            with preview_col1:
-                img = doll_image_path(selected_doll)
-                if img:
-                    st.image(str(img), use_container_width=True)
-            with preview_col2:
-                st.markdown(
-                    f'<div class="section-label" style="margin-top:1rem;">'
-                    f"{preview_name} &amp; {selected_doll.name}</div>",
-                    unsafe_allow_html=True,
-                )
-                st.markdown(
-                    f'<div class="section-hint">{selected_doll.tagline}</div>',
-                    unsafe_allow_html=True,
-                )
-
-    create_video = True
-    generate_images = False
-
-    with st.expander("Advanced options"):
-        create_video = st.checkbox(
-            "Create narrated video story (MP4)",
-            value=True,
-            help="Generates a voice-narrated video with illustrated slides.",
-        )
-        generate_images = st.checkbox(
-            "AI illustrations for text view (requires OpenAI API key)",
-            value=False,
-        )
-        if os.getenv("OPENAI_API_KEY"):
-            st.caption("✨ AI story generation enabled")
-        else:
-            st.caption("Using curated Apple Park story templates")
-
-    st.markdown("</div>", unsafe_allow_html=True)
-
-    generate_clicked = st.button(
-        "🎬  Create My Child's Bedtime Video Story",
-        type="primary",
-        use_container_width=True,
-        disabled=not child_name,
-    )
-
-    if not child_name:
-        st.caption("↑ Enter your child's name above to get started — it's free!")
-
-    if generate_clicked:
-        cleaned = sanitize_child_name(child_name)
-        if not is_valid_child_name(cleaned):
-            st.error("Please enter a valid first name (letters only, 2–32 characters).")
-        else:
-            doll = get_character(st.session_state.selected_doll_id)
-            if doll is None:
-                st.error("Please select an Apple Park Kids doll.")
-            else:
-                child = ChildProfile(name=cleaned, age=child_age)
-                with st.spinner(f"Writing {child.display_name()} & {doll.name}'s story…"):
-                    st.session_state.story = generate_story(child, doll)
-                    st.session_state.video_path = None
-
-                if create_video and st.session_state.story:
-                    with st.spinner("Creating your narrated video — this takes about a minute…"):
-                        try:
-                            video = generate_video_story(st.session_state.story, doll)
-                            st.session_state.video_path = str(video)
-                            st.session_state.story.video_path = str(video)
-                        except Exception as exc:
-                            st.warning(f"Video failed: {exc}. Story text is still available below.")
-
-    if st.session_state.story:
-        doll = get_character(st.session_state.story.doll_id)
-        if doll:
-            st.markdown(
-                f'<div class="result-header">'
-                f"<h2>🌙 {st.session_state.story.title}</h2>"
-                f"<p>Starring <strong>{st.session_state.story.child_name}</strong> "
-                f"&amp; <strong>{doll.name}</strong> · Apple Park</p>"
-                f"</div>",
-                unsafe_allow_html=True,
-            )
-
-            if st.session_state.video_path or st.session_state.story.video_path:
-                render_video(st.session_state.story)
-
-                video_file = st.session_state.video_path or st.session_state.story.video_path
-                if video_file and os.path.exists(video_file):
-                    with open(video_file, "rb") as handle:
-                        st.download_button(
-                            "⬇️ Download video (MP4)",
-                            handle.read(),
-                            file_name=f"{st.session_state.story.child_name}-{doll.id}-apple-park-story.mp4",
-                            mime="video/mp4",
-                            use_container_width=True,
-                        )
-
-            with st.expander("📖 Read the full story", expanded=False):
-                render_story(st.session_state.story, doll, generate_images)
-
-            render_cta(doll, st.session_state.story.child_name)
-
-    render_footer()
 
 
 if __name__ == "__main__":

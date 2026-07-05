@@ -1,8 +1,16 @@
-# Apple Park Kids — Personalized Video Bedtime Stories
+# Apple Park Kids — Personalized Story Chat
 
-**AI-generated, child-name-aware video stories** for every [Apple Park Kids](https://appleparkkids.com) organic cotton doll — a sales hook that lets parents preview a narrated video story starring their child and the doll they're about to buy.
+**AI chatbot for parents** — tell us about your child, get matched with the perfect [Apple Park Kids](https://appleparkkids.com) organic cotton doll (with product photo & shop link), and receive a personalized bedtime story starring your little one.
 
-> *"Hype your child's name. Get a short video story starring the Apple Park Kids doll you are about to buy."*
+> *"Chat about your child. We'll find their Apple Park friend and write a bedtime story just for them."*
+
+## How it works
+
+1. Parent **chats** about their child (name, age, interests, personality, bedtime routines)
+2. App **recommends the best-matching doll** with product image and shop link
+3. App generates a **3-scene bedtime story** set in Apple Park
+4. Optional **narrated video** (MP4) with voice narration
+5. **Shop CTA** links directly to the doll's product page on appleparkkids.com
 
 ## Every doll has a story
 
@@ -18,12 +26,6 @@
 | **Paloma** | Kind sharer & turn-taker | [Shop Paloma](https://appleparkkids.com/products/park-friends-paloma) |
 | **Wren** | Cozy story-time friend | [Shop Wren](https://appleparkkids.com/products/apple-park-kids-wren) |
 
-## How it works
-
-1. Parent enters their **child's name**
-2. They **pick an Apple Park Kids doll** (all 9 characters)
-3. App generates a **3-scene bedtime story** set in Apple Park
-4. A **narrated video** is built: illustrated slides + voice narration (MP4)
 5. **Shop CTA** links directly to the doll's product page on appleparkkids.com
 
 ## Quick start
@@ -54,6 +56,8 @@ cp .env.example .env
 
 | Feature | Default (no API key) | With OpenAI |
 |---------|---------------------|-------------|
+| Conversational parent chat | ✓ | ✓ |
+| Smart doll matching + product image | ✓ | ✓ (AI-enhanced) |
 | All 9 Apple Park Kids dolls | ✓ | ✓ |
 | Child name personalization | ✓ | ✓ |
 | Narrated video story (MP4) | ✓ | ✓ |
@@ -64,11 +68,13 @@ cp .env.example .env
 ## Project structure
 
 ```
-├── app.py                          # Streamlit demo landing page
+├── app.py                          # Streamlit chat UI
 ├── data/
 │   ├── characters.json             # All 9 Apple Park Kids dolls
 │   └── story_templates.json        # Per-doll bedtime story templates
 ├── services/
+│   ├── chatbot.py                  # Parent conversation orchestrator
+│   ├── doll_recommender.py         # Match child profile → best doll
 │   ├── story_generator.py          # Story engine (templates + OpenAI)
 │   ├── video_story.py              # MP4 builder (slides + narration)
 │   ├── scene_renderer.py           # Illustrated slide images (Pillow)
