@@ -99,6 +99,22 @@ def test_create_session_with_name():
     assert "Emma" in session.messages[0].content
 
 
+def test_ensure_child_name_in_story():
+    from services.story_generator import ensure_child_name_in_story
+    from models.schemas import BedtimeStory, StoryScene
+
+    bare = BedtimeStory(
+        title="A Night in the Park",
+        child_name="Milo",
+        doll_name="Wren",
+        doll_id="wren",
+        scenes=[StoryScene(title="Scene", text="A doll walked in the park.", illustration_caption="Park")],
+        moral="Sleep well.",
+    )
+    fixed = ensure_child_name_in_story(bare, "Milo")
+    assert "Milo" in fixed.full_text()
+
+
 if __name__ == "__main__":
     test_characters_load()
     test_child_name_validation()
@@ -107,4 +123,5 @@ if __name__ == "__main__":
     test_chatbot_collects_profile()
     test_story_includes_child_name()
     test_create_session_with_name()
+    test_ensure_child_name_in_story()
     print("All tests passed.")

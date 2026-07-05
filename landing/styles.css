@@ -505,10 +505,40 @@ section {
   margin: 0 auto 0.5rem;
 }
 
-.doll-pick span {
-  display: block;
+.child-star-card {
+  background: #fffbe8;
+  border: 2px dashed #e8c84a;
+  border-radius: 16px;
+  padding: 0.75rem 0.5rem;
+  text-align: center;
+  min-height: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.child-star-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ffe082, #ffcc80);
+  display: grid;
+  place-items: center;
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.name-in-story-badge {
+  display: inline-block;
+  background: #fff;
+  border: 1px solid #c5d9bc;
+  color: #5c7a4a;
   font-weight: 700;
-  font-size: 0.85rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
 }
 
 @media (max-width: 700px) {

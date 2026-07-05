@@ -32,13 +32,14 @@
           Organic cotton friends live in Apple Park. Enter your child's name, pick a doll,
           and read a brand-new bedtime story starring them every time.
         </p>
+        <article class="doll-card child-star-card" style="display:flex;flex-direction:column;align-items:center;justify-content:center;">
+          <div class="child-star-icon">⭐</div>
+          <h3>Your Child</h3>
+          <p>Stars in the story!</p>
+          <input id="child-name" type="text" placeholder="Enter name here…" maxlength="32"
+            style="width:90%; padding:0.6rem 0.85rem; border:1px solid #e4ddd2; border-radius:999px; font-size:0.95rem; text-align:center; margin-top:0.35rem;" />
+        </article>
         <div class="hero-actions">
-          <label class="name-card" for="child-name" style="display:block; cursor:default;">
-            <label for="child-name">Your child's first name</label>
-            <input id="child-name" type="text" placeholder="e.g. Emma, Noah, Sofia…" maxlength="32"
-              style="width:100%; padding:0.75rem 1rem; border:1px solid #e4ddd2; border-radius:999px; font-size:1rem;" />
-            <small style="display:block; margin-top:0.5rem; color:#5a6b5a;">Their name appears throughout the bedtime story.</small>
-          </label>
           <a class="btn btn-primary" href="http://localhost:8501" data-app-link>⭐ Start Story Time</a>
           <a class="btn btn-secondary" href="https://appleparkkids.com" target="_blank" rel="noopener">Shop Dolls</a>
         </div>

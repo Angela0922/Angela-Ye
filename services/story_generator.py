@@ -180,10 +180,38 @@ def generate_openai_story(child: ChildProfile, doll: DollCharacter) -> BedtimeSt
     return _parse_llm_response(payload, child, doll)
 
 
+def ensure_child_name_in_story(story: BedtimeStory, child_name: str) -> BedtimeStory:
+    """Guarantee the child's name appears in the story text."""
+    if story_mentions_child(story, child_name):
+        return story
+
+    if not story.scenes:
+        return story
+
+    first = story.scenes[0]
+    story.scenes[0] = StoryScene(
+        title=first.title,
+        text=f"In Apple Park, {child_name} had the most wonderful adventure. {first.text}",
+        illustration_caption=first.illustration_caption,
+    )
+    if len(story.scenes) > 1 and child_name.lower() not in story.scenes[1].text.lower():
+        second = story.scenes[1]
+        story.scenes[1] = StoryScene(
+            title=second.title,
+            text=f"{second.text} {child_name} giggled with delight.",
+            illustration_caption=second.illustration_caption,
+        )
+    story.child_name = child_name
+    return story
+
+
 def generate_story(child: ChildProfile, doll: DollCharacter, prefer_ai: bool = True) -> BedtimeStory:
+    child_name = child.display_name()
     if prefer_ai and os.getenv("OPENAI_API_KEY"):
         try:
-            return generate_openai_story(child, doll)
+            story = generate_openai_story(child, doll)
+            return ensure_child_name_in_story(story, child_name)
         except Exception:
             pass
-    return generate_template_story(child, doll)
+    story = generate_template_story(child, doll)
+    return ensure_child_name_in_story(story, child_name)
