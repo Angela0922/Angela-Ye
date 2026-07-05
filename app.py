@@ -581,11 +581,12 @@ def render_name_save_bar(session: ChatSession) -> bool:
     st.markdown('<div class="name-save-panel">', unsafe_allow_html=True)
     st.markdown("**Your child's name**")
     col_input, col_save = st.columns([4, 1])
+    default_name = (session.story.child_name if session.story else session.profile.name) or _get_landing_child_name()
+    if default_name and not st.session_state.get("story_save_name"):
+        st.session_state.story_save_name = default_name
     with col_input:
-        default_name = session.story.child_name if session.story else session.profile.name
         st.text_input(
             "Child name",
-            value=default_name or _get_landing_child_name(),
             placeholder="e.g. Angela",
             label_visibility="collapsed",
             key="story_save_name",
